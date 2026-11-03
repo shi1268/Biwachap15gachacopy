@@ -1695,7 +1695,30 @@ footer p{margin:4px 0}
  $c.querySelectorAll('[data-stamp]').forEach(b=>b.onclick=()=>{const id=b.dataset.stamp;if(state.stamps.includes(id))return;state.stamps.push(id);b.disabled=true;b.textContent='獲得済み';b.previousElementSibling.querySelector('.feature-muted').textContent='✅ スタンプ獲得済み';state.daily.stamp=(state.daily.stamp||0)+1;state.weekly.stamp=(state.weekly.stamp||0)+1;save(state)});
  $c.querySelector('#stampSearch')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase();$c.querySelectorAll('#stampList .feature-video').forEach(row=>row.hidden=!row.textContent.toLowerCase().includes(q))});
  function showMissionReward(amount,kind){const old=document.getElementById('missionRewardFx');if(old)old.remove();const layer=document.createElement('div');layer.id='missionRewardFx';layer.className='mission-reward-fx';layer.innerHTML=`<div class="mission-reward-burst"><div class="mission-reward-label">${kind==='daily'?'DAILY MISSION CLEAR!':'WEEKLY MISSION CLEAR!'}</div><div class="mission-reward-coins">🪙 +${amount.toLocaleString()}</div><div class="mission-reward-caption">COINS GET!</div></div>`;const host=document.querySelector('#featureModal .feature-dialog');(host||document.body).appendChild(layer);requestAnimationFrame(()=>layer.classList.add('show'));setTimeout(()=>{layer.classList.remove('show');setTimeout(()=>layer.remove(),450)},2100);showToast(`✨ ミッション報酬 ${amount.toLocaleString()}コイン獲得！`)}
- const claimMission=(kind,key)=>{const period=kind==='daily'?today():week(),claimKey=kind==='daily'?'dailyMissionClaims':'weeklyMissionClaims',obj=state[kind]||{},goals=kind==='daily'?{pull:1,fav:1,recommend:1}:{pull:10,fav:5,recommend:7},reward=kind==='daily'?500:1500;if(Number(obj[key]||0)<goals[key])return;state[claimKey]=state[claimKey]||{};state[claimKey][period]=state[claimKey][period]||[];if(state[claimKey][period].includes(key))return showToast('このミッションの報酬は受取済みです。');state[claimKey][period].push(key);save(state);window.biwachapPlayGameSE?.('se-mission-clear.mp3');setCoins(getCoins()+reward);render();showMissionReward(reward,kind)};
+ const claimMission=(kind,key)=>{
+  const period=kind==='daily'?today():week();
+  const claimKey=kind==='daily'?'dailyMissionClaims':'weeklyMissionClaims';
+  const obj=state[kind]||{};
+  const goals=kind==='daily'?{pull:1,fav:1,recommend:1}:{pull:10,fav:5,recommend:7};
+  const reward=kind==='daily'?500:1500;
+  if(!goals[key]||Number(obj[key]||0)<goals[key])return;
+  state[claimKey]=state[claimKey]||{};
+  state[claimKey][period]=state[claimKey][period]||[];
+  if(state[claimKey][period].includes(key))return showToast('このミッションの報酬は受取済みです。');
+  // 先に受取済み状態を保存し、表示を更新して二重受取を防ぐ。
+  state[claimKey][period].push(key);
+  save(state);
+  window.biwachapPlayGameSE?.('se-mission-clear.mp3');
+  // コイン管理は別スクリプトの公開APIを通して行う（内部関数には直接触れない）。
+  if(typeof window.biwachapAwardCoins==='function'){
+    window.biwachapAwardCoins(reward,kind==='daily'?'デイリーミッション達成報酬':'ウィークリーミッション達成報酬');
+  }else{
+    console.error('コイン報酬関数 biwachapAwardCoins が見つかりません');
+    showToast('コインの加算に失敗しました。ページを再読み込みしてください。');
+  }
+  render();
+  showMissionReward(reward,kind);
+ };
  $c.querySelectorAll('[data-claim-mission]').forEach(tile=>{const act=()=>claimMission(tile.dataset.claimMission,tile.dataset.missionKey);tile.addEventListener('click',act);tile.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}})});
  $c.querySelector('#equippedTitleButton')?.addEventListener('click',()=>{$c.querySelector('#titleChoiceOverlay')?.classList.add('open')});
  $c.querySelector('#closeTitleChoices')?.addEventListener('click',()=>{$c.querySelector('#titleChoiceOverlay')?.classList.remove('open')});
