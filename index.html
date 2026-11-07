@@ -793,7 +793,7 @@ footer p{margin:4px 0}
       </button>
     </div>
     <div class="secondary-actions">
-      <div class="share-actions-group"><button class="small-btn" id="shareResultBtn" disabled>📣 結果画像をXで共有</button><button class="small-btn" id="shareImageBtn" disabled>🖼️ 結果画像を保存</button></div>
+      <div class="share-actions-group"><button class="small-btn" id="shareResultBtn" disabled>𝕏 結果をXでシェア</button><button class="small-btn" id="shareImageBtn" disabled>🖼️ 結果画像を保存</button></div>
       <div class="machine-notes">※重複なしで抽選します。引いた動画はリセットするまで再登場しません。<br>お気に入り・未視聴リストはこのブラウザ内に保存されます。</div>
     </div>
     <div class="mini-game-zone">
@@ -818,7 +818,7 @@ footer p{margin:4px 0}
   <section class="two-panels">
     <div class="panel">
       <h3>💚 これ好き</h3>
-      <div class="list-tools"><button class="small-btn" id="shareFavorites">𝕏 Xでシェア</button><button class="small-btn" id="saveFavorites">🖼️ 一覧画像を保存</button><button class="small-btn" id="saveFavoriteGridImageFromList">💚 TOP9画像を生成・保存</button></div>
+      <div class="list-tools"><button class="small-btn" id="shareFavorites">𝕏 Xでシェア</button><button class="small-btn" id="saveFavorites">🖼️ 一覧画像を保存</button><button class="small-btn" id="saveFavoriteGridImageFromList">💚 TOP9画像を生成・保存</button></div><img id="favoriteGridImageListPreview" class="profile-image-preview" alt="これ好きTOP9画像プレビュー" hidden>
       <div id="favoritesList" class="list"><p class="csv-help">「これ好き」に登録した動画がここに表示されます。</p></div>
     </div>
     <div class="panel">
@@ -1267,20 +1267,14 @@ footer p{margin:4px 0}
     if (latestResults.length) renderResults(latestResults, latestResults.length === 10 ? 10 : 1, true);
     renderDailyRecommendation(true);
   }
-  async function shareList(list, label) {
+  function shareList(list, label) {
     if (!list.length) { showToast("一覧に動画がありません"); return; }
-    try {
-      const blob = await createListImage(list, label);
-      const file = new File([blob], "biwachap-list.png", {type:"image/png"});
-      if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
-        await navigator.share({title:label, text:`${label} #琵琶ちゃぷ動画ガチャ`, files:[file]});
-        return;
-      }
-      const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(label.includes("未視聴")?"biwachap-unviewed":"biwachap-favorites")+".png";a.click();
-      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
-      window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(`${label} #琵琶ちゃぷ動画ガチャ`),"_blank","noopener,noreferrer");
-      showToast("一覧画像を保存しました。Xの投稿画面に画像を添付してください。");
-    } catch (_) { showToast("画像を共有できませんでした。『一覧画像を保存』をお試しください。"); }
+    const heading = label.includes("未視聴") ? "【未視聴動画リスト】" : "【これ好き動画リスト】";
+    const entries = list.map((v,i) => `${i+1}. ${v.title}\n${v.url}`).join("\n\n");
+    const text = `${heading}\n\n${entries}\n\n↓ガチャはこちらから↓\nhttps://shi1268.github.io/Biwachap15gacha/\n\n#琵琶ちゃぷ動画ガチャ`;
+    const intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
+    const win = window.open(intent, "_blank", "noopener,noreferrer");
+    if (!win) window.location.href = intent;
   }
   async function createListImage(list, label) {
     const canvas=document.createElement("canvas"), ctx=canvas.getContext("2d");
@@ -1807,8 +1801,7 @@ footer p{margin:4px 0}
     const entries = (latestResults || []).map(v => `・${v.title}\n${v.url}`).join("\n");
     const text = `【今日の琵琶ちゃぷガチャ結果】\n${entries ? entries + "\n\n" : ""}↓ガチャはこちらから↓\nhttps://shi1268.github.io/Biwachap15gacha/\n\n#琵琶ちゃぷ動画ガチャ`;
     const intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
-    const win = window.open(intent, "_blank", "noopener,noreferrer");
-    if (!win) window.location.href = intent;
+    window.open(intent, "_blank", "noopener,noreferrer");
   }
   async function saveResultImage() {
     try {
@@ -1921,7 +1914,6 @@ footer p{margin:4px 0}
     $("shareFavorites").addEventListener("click",()=>{setAchievementFlag("xShare");shareList(getFavorites(),"これ好き動画リスト");});
     $("shareUnviewed").addEventListener("click",()=>{setAchievementFlag("xShare");shareList(getUnviewed(),"未視聴動画リスト");});
     $("saveFavorites").addEventListener("click",()=>{setAchievementFlag("favoritesImage");saveListImage(getFavorites(),"💚 これ好き");});
-    $("saveFavoriteGridImageFromList").addEventListener("click",()=>{setAchievementFlag("favoritesImage");saveFavoriteGridImage();});
     $("saveUnviewed").addEventListener("click",()=>saveListImage(getUnviewed(),"🔖 未視聴動画"));
     const csvFiles = [
       {name:"youtube_challenge_videos.csv", genre:"challenge"},
@@ -2159,7 +2151,7 @@ footer p{margin:4px 0}
  function displayAndDownloadCanvas(canvas,previewId,filename,message){const url=canvas.toDataURL('image/png');const preview=$(previewId);if(preview){preview.src=url;preview.hidden=false;}const a=document.createElement('a');a.href=url;a.download=filename;a.click();showToast(message)}
  async function saveProfileImage(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),unview=get('biwachapGachaUnviewed_v1',[]),coins=Number(get('biwachapGachaCoins_v1',0))||0;const c=document.createElement('canvas');c.width=1200;c.height=1500;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,1200,1500);g.addColorStop(0,'#101a3a');g.addColorStop(1,'#172754');x.fillStyle=g;x.fillRect(0,0,1200,1500);x.textAlign='center';x.fillStyle='#c6ff38';x.font='900 58px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText('BIWACHAP PROFILE',600,110);x.fillStyle='#fff';x.font='bold 34px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText(state.equipped||'称号未装備',600,190);const stats=[['🎰 累計ガチャ',pulls+' 回'],['📚 動画カード',Object.keys(collection).length+' / '+videos.length+' 枚'],['💚 これ好き',fav.length+' 本'],['🔖 未視聴',unview.length+' 本'],['🪙 所持コイン',coins.toLocaleString()+' 枚'],['🧠 覆面サムネクイズ最大連続正解',Number(state.quizMaxStreak||0)+' 回']];stats.forEach((a,i)=>{const col=i%2,row=Math.floor(i/2),xx=100+col*520,yy=300+row*180;x.fillStyle='#0b1530';x.fillRect(xx,yy,480,130);x.strokeStyle='#7184b8';x.strokeRect(xx,yy,480,130);x.fillStyle='#dfff8b';x.font='bold 28px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText(a[0],xx+240,yy+48);x.fillStyle='#fff';x.font='bold 38px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText(a[1],xx+240,yy+100)});x.fillStyle='#dfff8b';x.font='bold 34px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText('お気に入り TOP 5',600,930);fav.slice(0,5).forEach((v,i)=>{x.fillStyle='#fff';x.font='26px sans-serif';x.textAlign='left';x.fillText(`${i+1}. ${v.title}`,120,1000+i*68,960)});displayAndDownloadCanvas(c,'profileImagePreview','biwachap-profile.png','プロフィール画像を表示・保存しました！')}
  function loadCanvasImage(url){return new Promise(resolve=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=url;})}
- async function saveFavoriteGridImage(){
+ async function saveFavoriteGridImage(previewId="favoriteGridImagePreview"){
   const favorites=get('biwachapGachaFavorites_v1',[]).slice(0,9);
   const c=document.createElement('canvas');c.width=1200;c.height=1500;const x=c.getContext('2d');
   const g=x.createLinearGradient(0,0,1200,1500);g.addColorStop(0,'#101a3a');g.addColorStop(1,'#172754');x.fillStyle=g;x.fillRect(0,0,1200,1500);
@@ -2182,7 +2174,7 @@ footer p{margin:4px 0}
     const bx=xx+cellW-48,by=yy+cellH-48;x.save();x.shadowColor='#c6ff38';x.shadowBlur=16;x.fillStyle='#c6ff38';x.beginPath();x.arc(bx,by,37,0,Math.PI*2);x.fill();x.shadowBlur=0;x.lineWidth=4;x.strokeStyle='#fff';x.stroke();x.fillStyle='#101a3a';x.textAlign='center';x.textBaseline='middle';x.font='1000 72px sans-serif';x.fillText(String(i+1),bx,by+1);x.restore();x.textBaseline='alphabetic';
    }else{x.fillStyle='#7184b8';x.textAlign='center';x.font='bold 26px sans-serif';x.fillText('空き枠',xx+cellW/2,yy+165)}
   }
-  displayAndDownloadCanvas(c,'favoriteGridImagePreview','biwachap-favorites-top9.png','「これ好き」TOP 9画像を表示・保存しました！')
+  displayAndDownloadCanvas(c,previewId,'biwachap-favorites-top9.png','「これ好き」TOP 9画像を表示・保存しました！')
  }
  function renderProfileImageArea(host){host.insertAdjacentHTML('beforeend',`<section class="profile-image-gallery"><h3>🖼️ プロフィール画像</h3><p class="feature-muted">生成した画像はここに表示されます。スマホでは画像を長押しして保存することもできます。</p><div class="profile-image-card"><h4>👤 プロフィールカード</h4><img id="profileImagePreview" class="profile-image-preview" alt="プロフィール画像プレビュー" hidden></div><div class="profile-image-card"><h4>💚 これ好き TOP 9</h4><p class="feature-muted">「これ好き」リストの上から9本を3列×3行で並べます。</p><button type="button" class="gacha-btn profile-physical-btn" id="saveFavoriteGridImage">🖼️ TOP 9画像を生成・保存</button><img id="favoriteGridImagePreview" class="profile-image-preview" alt="これ好きTOP 9画像プレビュー" hidden></div></section>`);host.querySelector('#saveFavoriteGridImage')?.addEventListener('click',saveFavoriteGridImage)}
  function shareProfileX(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),unview=get('biwachapGachaUnviewed_v1',[]);const text=`【琵琶ちゃぱー(琵琶ちゃぱー?)プロフィール】\n\n称号：${state.equipped||'未装備'}\n累計ガチャ：${pulls}回　カード：${Object.keys(collection).length}/${videos.length}枚\nこれ好き：${fav.length}本　未視聴：${unview.length}回\n\n↓ガチャはこちらから↓\nhttps://shi1268.github.io/Biwachap15gacha/\n\n#琵琶ちゃぷ動画ガチャ`;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener,noreferrer')}
@@ -2258,6 +2250,15 @@ footer p{margin:4px 0}
  document.addEventListener('click',e=>{if(!watchTarget||watchPrompted||watchPromptActive||Date.now()>watchWindowUntil)return;if(e.target.closest('#watchConfirmModal')||e.target.closest('a.watch'))return;watchPrompted=true;watchPromptActive=true;$('watchConfirmReply').textContent='';watchModal.classList.add('show');watchModal.setAttribute('aria-hidden','false')},true);
  $('watchConfirmYes')?.addEventListener('click',()=>{$('watchConfirmReply').textContent='そうですか…勘違いだったようです。失礼しました。';setTimeout(closeWatch,1500)});
  $('watchConfirmNo')?.addEventListener('click',()=>{const u=watchTarget?.url;closeWatch();if(u)window.open(u,'_blank','noopener,noreferrer')});
+
+ // 「これ好き」一覧欄のTOP9画像ボタンもプロフィール画面と同じ生成処理を使う。
+ document.addEventListener('click',event=>{
+   const button=event.target.closest('#saveFavoriteGridImageFromList');
+   if(!button)return;
+   event.preventDefault();
+   setAchievementFlag('favoritesImage');
+   saveFavoriteGridImage('favoriteGridImageListPreview');
+ });
 
  // 制作者のXポスト紹介ウィンドウ（X公式埋め込み）
  const creatorPostsModal=$('creatorPostsModal');
