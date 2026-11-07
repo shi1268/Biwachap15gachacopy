@@ -541,6 +541,46 @@ footer p{margin:4px 0}
   #homePuzzleModal .home-bath{margin-top:28%!important}
 }
 
+
+/* 2026-11-07: profile header, rarity row, and consistent puzzle piece rendering */
+#featureModal .feature-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap}
+#featureModal .feature-head h2{flex:1 1 auto;min-width:0}
+#featureModal .profile-head-actions{flex:0 1 auto;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+#featureModal .profile-head-actions button{background:#101e43!important;color:#f4f7ff!important;border:1px solid #fff!important;border-radius:8px!important;box-shadow:none!important}
+#featureModal #closeFeaturesBtn{flex:0 0 auto;margin-left:0}
+#featureModal .rarity-collection-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+#featureModal .rarity-collection-grid .feature-tile{padding:8px 5px;text-align:center;font-size:.9rem}
+#featureModal .rarity-collection-grid .feature-tile strong{margin-bottom:2px}
+@media(max-width:650px){
+ #featureModal .feature-head{gap:6px;flex-wrap:wrap}
+ #featureModal .feature-head h2{flex:1 1 100%}
+ #featureModal .profile-head-actions{flex:1 1 auto;margin:0;white-space:normal}
+ #featureModal .profile-head-actions button{flex:1 1 0;font-size:.7rem;padding:6px 5px}
+ #featureModal .rarity-collection-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+ #featureModal .rarity-collection-grid .feature-tile{padding:6px 2px;font-size:.78rem}
+}
+/* Filled cells use the same two-row layout as the tray: visual area + label. */
+#homePuzzleModal .home-drop-slot.filled{
+ display:grid!important;grid-template-rows:minmax(0,1fr) auto!important;
+ align-items:center!important;justify-items:center!important;
+ padding:3px!important;min-height:0!important;overflow:hidden!important;
+}
+#homePuzzleModal .home-drop-slot.filled > .home-piece-image,
+#homePuzzleModal .home-drop-slot.filled > .home-piece-side-layout,
+#homePuzzleModal .home-drop-slot.filled > .home-piece-images{
+ min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;
+ width:auto!important;height:100%!important;object-fit:contain!important;
+}
+#homePuzzleModal .home-drop-slot.filled > .home-piece-image.home-scroll-image{
+ width:auto!important;height:100%!important;max-width:100%!important;max-height:100%!important;
+ object-fit:contain!important;object-position:center!important;transform:none!important;
+}
+#homePuzzleModal .home-drop-slot.filled .home-piece-label{
+ grid-row:2!important;align-self:end!important;width:100%!important;max-height:2.2em!important;
+ overflow:hidden!important;line-height:1.05!important;font-size:clamp(.42rem,1.05vw,.68rem)!important;
+}
+#homePuzzleModal .home-drop-slot.filled .home-scroll-image{flex:none!important}
+
 </style>
 </head>
 <body>
@@ -1853,7 +1893,7 @@ footer p{margin:4px 0}
  const progress=(n,max)=>`<div class="feature-progress"><span style="width:${Math.min(100,100*n/max)}%"></span></div>`;
  const videoRow=v=>`<div class="feature-video"><img src="${thumb(v)}" alt="" loading="lazy"><div class="profile-video-title">${esc(v.title)}</div></div>`;
  function availableTitles(){const ids=earned();const names={'pull-30':'駆け出し琵琶ちゃぱー','pull-100':'期待の新星琵琶ちゃぱー','pull-200':'頼れる中堅琵琶ちゃぱー','pull-300':'もはやベテラン琵琶ちゃぱー','pull-400':'これぞエキスパート琵琶ちゃぱー'};const out=Object.entries(names).filter(([id])=>ids.includes(id)).map(([,name])=>name);document.querySelectorAll('#titlesList .title-entry:not(.locked)').forEach(row=>{const n=row.querySelector('strong')?.textContent?.replace(/^🏆\s*/,'').trim();if(n&&!out.includes(n))out.push(n)});return out}
- function profile(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),unview=get('biwachapGachaUnviewed_v1',[]),coins=Number(get('biwachapGachaCoins_v1',0))||0;const counts={N:0,R:0,SR:0,UR:0,LR:0};Object.values(collection).forEach(x=>{if(counts[x.rarity]!=null)counts[x.rarity]++});const equipped=state.equipped||'未装備';return `<div class="feature-grid profile-main-stats"><div class="feature-tile"><strong>🎰 累計ガチャ</strong>${pulls} 回</div><div class="feature-tile"><strong>📚 動画カード</strong>${Object.keys(collection).length} / ${videos.length} 枚</div><div class="feature-tile"><strong>💚 これ好き</strong>${fav.length} 本</div><div class="feature-tile"><strong>🔖 未視聴リスト</strong>${unview.length} 本</div></div><div class="feature-grid profile-secondary-stats"><div class="feature-tile"><strong>🪙 所持コイン</strong>${coins.toLocaleString()} 枚</div><div class="feature-tile equipped-title-tile"><strong>🏅 装備中の称号</strong><button type="button" class="equipped-title-display" id="equippedTitleButton" aria-expanded="false">${esc(equipped)}</button><div class="title-choice-overlay" id="titleChoiceOverlay"><div class="title-choice-window" role="dialog" aria-modal="true" aria-label="獲得済み称号一覧"><h3>🏆 獲得済み称号一覧</h3><div class="title-choice-list">${['',...[...new Set([...availableTitles(),...(state.quizSecretTitles||[])])]].map(t=>`<button type="button" data-equip-title="${esc(t)}" class="${(state.equipped||'')===t?'selected':''}">${esc(t||'称号未装備')}</button>`).join('')}</div><button type="button" id="closeTitleChoices" style="width:100%;margin-top:8px">閉じる</button></div></div></div><div class="feature-tile"><strong>🧠 覆面サムネクイズ最大連続正解数</strong>${Number(state.quizMaxStreak||0)} 回</div></div><h3>レアリティ別コレクション</h3><div class="feature-grid">${Object.entries(counts).map(([k,n])=>`<div class="feature-tile"><strong>${k}</strong>${n} 枚</div>`).join('')}</div><h3>お気に入り動画 TOP 5</h3>${fav.slice(0,5).map(f=>videoRow(videos.find(v=>v.id===f.id)||f)).join('')||'<p class="feature-muted">まだ登録がありません。</p>'}<p class="feature-muted">データはこのブラウザ内に保存されます。別端末・別ブラウザとは共有されません。</p>`}
+ function profile(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),unview=get('biwachapGachaUnviewed_v1',[]),coins=Number(get('biwachapGachaCoins_v1',0))||0;const counts={N:0,R:0,SR:0,UR:0,LR:0};Object.values(collection).forEach(x=>{if(counts[x.rarity]!=null)counts[x.rarity]++});const equipped=state.equipped||'未装備';return `<div class="feature-grid profile-main-stats"><div class="feature-tile"><strong>🎰 累計ガチャ</strong>${pulls} 回</div><div class="feature-tile"><strong>📚 動画カード</strong>${Object.keys(collection).length} / ${videos.length} 枚</div><div class="feature-tile"><strong>💚 これ好き</strong>${fav.length} 本</div><div class="feature-tile"><strong>🔖 未視聴リスト</strong>${unview.length} 本</div></div><div class="feature-grid profile-secondary-stats"><div class="feature-tile"><strong>🪙 所持コイン</strong>${coins.toLocaleString()} 枚</div><div class="feature-tile equipped-title-tile"><strong>🏅 装備中の称号</strong><button type="button" class="equipped-title-display" id="equippedTitleButton" aria-expanded="false">${esc(equipped)}</button><div class="title-choice-overlay" id="titleChoiceOverlay"><div class="title-choice-window" role="dialog" aria-modal="true" aria-label="獲得済み称号一覧"><h3>🏆 獲得済み称号一覧</h3><div class="title-choice-list">${['',...[...new Set([...availableTitles(),...(state.quizSecretTitles||[])])]].map(t=>`<button type="button" data-equip-title="${esc(t)}" class="${(state.equipped||'')===t?'selected':''}">${esc(t||'称号未装備')}</button>`).join('')}</div><button type="button" id="closeTitleChoices" style="width:100%;margin-top:8px">閉じる</button></div></div></div><div class="feature-tile"><strong>🧠 覆面サムネクイズ最大連続正解数</strong>${Number(state.quizMaxStreak||0)} 回</div></div><h3>レアリティ別コレクション</h3><div class="feature-grid rarity-collection-grid">${Object.entries(counts).map(([k,n])=>`<div class="feature-tile"><strong>${k}</strong>${n} 枚</div>`).join('')}</div><h3>お気に入り動画 TOP 5</h3>${fav.slice(0,5).map(f=>videoRow(videos.find(v=>v.id===f.id)||f)).join('')||'<p class="feature-muted">まだ登録がありません。</p>'}<p class="feature-muted">データはこのブラウザ内に保存されます。別端末・別ブラウザとは共有されません。</p>`}
  function pack(){return `<p>通常ガチャとは別枠の特別パック。ジャンルを選んで、まだ引いていない動画をランダムに1本開封します。</p><div class="feature-actions"><select id="packGenre"><option value="all">全ジャンル</option><option value="challenge">企画</option><option value="game">ゲーム</option><option value="talk">お話</option></select><button id="openSecretPack">🎁 シークレットパックを開封</button></div><p>開封回数：${state.packOpened} 回</p><div id="packResult"></div><p class="feature-muted">開封履歴はこのブラウザに保存されます。動画の通常ガチャ抽選状態には影響しません。</p>`}
  function stamp(){const done=new Set(state.stamps);const groups=[['challenge','🎉 企画動画'],['game','🎮 ゲーム動画'],['talk','💬 お話動画']];return `<p>動画サイトで実際に視聴したら「視聴済みにする」を押してスタンプを集めよう。</p>${groups.map(([g,label])=>{const list=videos.filter(v=>v.genreType===g||String(v.genre).includes(label.slice(2)));const n=list.filter(v=>done.has(v.id)).length;return `<div class="feature-tile"><strong>${label}</strong>${n} / ${list.length} 本 ${progress(n,Math.max(1,list.length))}</div>`}).join('')}<h3>動画スタンプ一覧</h3><div class="feature-actions"><input id="stampSearch" placeholder="動画タイトルで検索" style="flex:1;min-width:160px"></div><div id="stampList">${videos.map(v=>`<div class="feature-video"><img src="${thumb(v)}" alt=""><div style="flex:1"><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.title)}</a><div class="feature-muted">${done.has(v.id)?'✅ スタンプ獲得済み':'未獲得'}</div></div><button data-stamp="${esc(v.id)}" ${done.has(v.id)?'disabled':''}>${done.has(v.id)?'獲得済み':'視聴済みにする'}</button></div>`).join('')}</div><p class="feature-muted">検索欄で動画タイトルを絞り込めます。</p>`}
  function mission(){if(state.dailyDate!==today()){state.dailyDate=today();state.daily={pull:0,fav:0,recommend:0};}if(state.weekDate!==week()){state.weekDate=week();state.weekly={pull:0,fav:0,recommend:0};}save(state);const daily=[['pull','ガチャを1回引く',1],['fav','動画を1本「これ好き」に登録',1],['recommend','「今日のおすすめ動画」を視聴',1]],weekly=[['pull','ガチャを10回引く',10],['fav','動画を5本「これ好き」に登録',5],['recommend','「今日のおすすめ動画」を7回視聴',7]];const block=(kind,name,arr,obj)=>{const period=kind==='daily'?today():week(),claimKey=kind==='daily'?'dailyMissionClaims':'weeklyMissionClaims',claims=state[claimKey]||{};return `<div class="mission-head"><h3>${name}</h3></div><div class="feature-grid">${arr.map(([k,label,max])=>{const n=Math.min(max,Number(obj[k]||0)),done=n>=max,claimed=claims[period]?.includes(k);return `<div class="feature-tile mission-tile ${done&&!claimed?'mission-tile-ready mission-tile-claimable':''} ${claimed?'mission-tile-claimed':''}" ${done&&!claimed?`role="button" tabindex="0" data-claim-mission="${kind}" data-mission-key="${k}"`:''}><strong>${done?'✅':'🎯'} ${label}</strong>${n} / ${max}${progress(n,max)}${done?`<small>${claimed?'報酬受取済み':'達成！ タップして報酬を受け取る'}</small>`:''}<small>報酬：${kind==='daily'?500:1500}コイン</small></div>`}).join('')}</div>`};return `<p>達成したミッションをクリック／タップすると、そのミッションの報酬を受け取れます。デイリーは毎日、ウィークリーは毎週月曜に更新。</p>${block('daily','🌞 デイリーミッション',daily,state.daily)}${block('weekly','✨ ウィークリーミッション',weekly,state.weekly)}<p class="feature-muted">報酬はミッションごとに受け取れます。受取状況はデイリー・ウィークリーの更新時にリセットされます。</p>`}
