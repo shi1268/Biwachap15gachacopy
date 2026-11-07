@@ -137,6 +137,24 @@ h1{font-size:clamp(1.8rem,5.5vw,3.7rem);line-height:1.12;margin:12px 0;color:var
 .titles-modal{position:fixed;inset:0;z-index:85;display:none;place-items:center;padding:18px;background:#030716eF}.titles-modal.show{display:grid}.titles-dialog{width:min(720px,100%);max-height:85vh;overflow:auto;padding:20px;border:1px solid #ffe99b88;border-radius:18px;background:linear-gradient(145deg,#172754,#080e24);box-shadow:0 0 35px #ffe66d20}.titles-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.titles-head h2{margin:0;color:#ffe99b;font-size:1.3rem}.titles-count{color:var(--muted);font-size:.85rem}.titles-list{display:grid;gap:9px}.title-entry{border:1px solid #ffe99b44;border-radius:10px;padding:12px;background:#090f25}.title-entry strong{display:block;color:#fff4b8;margin-bottom:4px}.title-entry span{display:block;color:#c5cee5;font-size:.82rem;line-height:1.5}.title-entry.locked{opacity:.45;border-color:#7184b844}.list-reorder{display:flex;gap:4px}.list-reorder button{padding:5px 8px;font-size:.75rem}
 footer{padding:35px 0 45px;text-align:center;color:#8493ba;font-size:.78rem;line-height:1.45}
 footer p{margin:4px 0}
+.footer-creator-row{display:flex;justify-content:flex-end;align-items:center;margin-top:18px;width:100%}
+.creator-posts-open{appearance:none;border:1px solid #dce6ff;border-radius:10px;padding:10px 15px;background:linear-gradient(180deg,#263b70,#111d40);color:#fff;font:900 .82rem/1.35 inherit;letter-spacing:.01em;box-shadow:0 4px 0 #070d20,0 0 14px #7184b833,inset 0 1px 0 #ffffff35;cursor:pointer;transition:transform .12s,box-shadow .12s,filter .12s}
+.creator-posts-open:hover{filter:brightness(1.18);box-shadow:0 4px 0 #070d20,0 0 20px #c6ff3855,inset 0 1px 0 #ffffff55}
+.creator-posts-open:active{transform:translateY(3px);box-shadow:0 1px 0 #070d20,inset 0 2px 5px #0006}
+.creator-posts-modal{position:fixed;inset:0;z-index:120;display:none;place-items:center;padding:16px;background:#030716eF;}
+.creator-posts-modal.show{display:grid}
+.creator-posts-dialog{width:min(760px,100%);max-height:min(88vh,900px);display:flex;flex-direction:column;overflow:hidden;border:1px solid #7184b8;border-radius:18px;background:linear-gradient(145deg,#172754,#080e24);box-shadow:0 0 38px #43f4ff22,0 18px 60px #000a}
+.creator-posts-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #7184b855;background:#0b1530}
+.creator-posts-head h2{margin:0;color:#dfff8b;font-size:1.08rem;line-height:1.4}
+.creator-posts-head .small-btn{flex-shrink:0}
+.creator-posts-intro{padding:12px 18px 4px;color:#dce6ff;font-size:.88rem;line-height:1.6}
+.creator-posts-intro a{color:#c6ff38;font-weight:900;text-decoration:none}
+.creator-posts-list{overflow:auto;overscroll-behavior:contain;padding:10px 18px 20px;display:grid;gap:14px}
+.creator-post-entry{min-width:0;padding:12px;border:1px solid #7184b855;border-radius:13px;background:#080f25}
+.creator-post-entry .twitter-tweet{margin:0 auto!important;max-width:100%!important}
+.creator-post-fallback{display:block;color:#c6ff38;text-align:center;padding:12px;font-weight:800;overflow-wrap:anywhere}
+@media(max-width:600px){.footer-creator-row{justify-content:center}.creator-posts-modal{padding:8px}.creator-posts-dialog{max-height:92vh}.creator-posts-head{padding:12px}.creator-posts-head h2{font-size:.95rem}.creator-posts-list{padding:8px 10px 14px}}
+
 .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:20;
  padding:12px 17px;background:var(--lime);color:#101a3a;font-weight:900;border-radius:12px;box-shadow:0 0 30px #c6ff3850;transition:.25s;max-width:calc(100% - 28px);text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -581,6 +599,124 @@ footer p{margin:4px 0}
 }
 #homePuzzleModal .home-drop-slot.filled .home-scroll-image{flex:none!important}
 
+
+/* 2026-11-07: 実家再現パズルの周辺ラベルと説明・タイマー配置 */
+#homePuzzleModal .home-floor-row{
+  align-items:stretch!important;
+  grid-template-columns:34px minmax(0,1fr) 34px!important;
+}
+#homePuzzleModal .home-bath{
+  align-self:center!important;
+  justify-self:center!important;
+  margin:0!important;
+  position:static!important;
+  writing-mode:vertical-rl!important;
+  text-orientation:mixed!important;
+  line-height:1.2!important;
+}
+#homePuzzleModal .home-puzzle-statusbar{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:2px!important;
+  width:100%!important;
+  max-width:900px!important;
+  box-sizing:border-box!important;
+  margin:10px auto 12px!important;
+  padding:10px!important;
+  text-align:center!important;
+  white-space:normal!important;
+  font-size:.82rem!important;
+  line-height:1.65!important;
+  font-weight:400!important;
+  color:#dbe4ff!important;
+}
+#homePuzzleModal .home-puzzle-prompt,
+#homePuzzleModal #homePuzzleStatus{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  color:#dbe4ff!important;
+  font:inherit!important;
+  font-weight:400!important;
+  line-height:1.65!important;
+  text-align:center!important;
+  text-shadow:none!important;
+}
+@media(max-width:560px){
+  #homePuzzleModal .home-floor-row{grid-template-columns:25px minmax(0,1fr) 25px!important;gap:4px!important}
+  #homePuzzleModal .home-bath{margin:0!important;font-size:.75rem!important}
+}
+
+
+
+/* 2026-11-07: profile physical buttons, puzzle heading alignment, and exam reminder glow */
+#featureModal .profile-head-actions .profile-physical-btn{
+  min-height:0!important;
+  height:auto!important;
+  padding:9px 13px!important;
+  border:1px solid #e3ff9b!important;
+  border-radius:10px!important;
+  color:#101a3a!important;
+  font-size:.78rem!important;
+  font-weight:1000!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+  background:linear-gradient(135deg,#d7ff70,var(--lime2))!important;
+  box-shadow:0 4px 0 #548a00,0 0 16px #b8ff3840!important;
+  overflow:hidden!important;
+}
+#featureModal .profile-head-actions .profile-physical-btn:active{
+  transform:translateY(3px)!important;
+  box-shadow:0 1px 0 #548a00!important;
+}
+#featureModal .profile-head-actions .profile-physical-btn:after{content:"";position:absolute;top:-60%;left:-35%;width:22%;height:220%;background:#ffffff90;transform:rotate(25deg);transition:left .5s}
+#featureModal .profile-head-actions .profile-physical-btn:hover:after{left:125%}
+@media(max-width:650px){
+  #featureModal .profile-head-actions .profile-physical-btn{white-space:normal!important;padding:8px 6px!important;font-size:.7rem!important}
+}
+#homePuzzleModal .home-puzzle-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+#homePuzzleModal .home-puzzle-head h2{flex:0 0 auto;position:relative;z-index:1;}
+#homePuzzleModal .home-puzzle-head .home-puzzle-prompt{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:max-content;max-width:calc(100% - 230px);text-align:center;
+  color:#dbe4ff!important;font:inherit!important;font-weight:400!important;
+  line-height:1.4!important;white-space:normal!important;
+}
+#homePuzzleModal .home-puzzle-statusbar{display:flex!important;justify-content:center!important;align-items:center!important;text-align:center!important;margin:8px auto 12px!important;padding:6px!important;}
+#homePuzzleModal #homePuzzleStatus{display:block!important;width:100%!important;text-align:center!important;color:#dbe4ff!important;font:inherit!important;font-weight:400!important;}
+#homePuzzleModal .home-bath{transform:translateY(-3em)!important;}
+@media(max-width:650px){
+  #homePuzzleModal .home-puzzle-head{flex-wrap:wrap!important;justify-content:space-between!important;}
+  #homePuzzleModal .home-puzzle-head h2{flex:1 1 auto!important;}
+  #homePuzzleModal .home-puzzle-head .home-puzzle-prompt{position:static!important;transform:none!important;order:3!important;flex:1 1 100%!important;width:100%!important;max-width:none!important;text-align:center!important;}
+}
+.nusuke-open-btn.score-unregistered{
+  animation:nusukeUnregisteredGlow 1.15s ease-in-out infinite alternate!important;
+  border-color:#e3ff9b!important;
+  filter:brightness(1.3)!important;
+}
+@keyframes nusukeUnregisteredGlow{
+  from{box-shadow:inset 0 0 15px #c6ff3844,0 0 12px #c6ff38aa,0 0 24px #c6ff3877;filter:brightness(1.2)}
+  to{box-shadow:inset 0 0 22px #eaff9b77,0 0 22px #c6ff38,0 0 42px #c6ff38cc;filter:brightness(1.65)}
+}
+
+
+/* 2026-11-07: requested final refinements */
+.legend-request-btn{
+  display:inline-flex;align-items:center;justify-content:center;align-self:center;
+  min-height:0;padding:10px 14px;border-radius:11px;text-decoration:none;
+  white-space:nowrap;font-size:.82rem;line-height:1.3;
+  box-shadow:0 5px 0 #548a00,0 0 20px #b8ff3840;
+}
+.legend-request-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #548a00}
+@media(max-width:620px){.legend-request-btn{white-space:normal;max-width:100%;font-size:.76rem;padding:9px 10px}}
+#homePuzzleModal .home-puzzle-head .home-puzzle-prompt{white-space:pre-wrap!important;}
+#homePuzzleModal .home-garden,
+#homePuzzleModal .home-bath,
+#homePuzzleModal .home-entrance{color:#fff!important;text-shadow:0 1px 3px #000!important;}
+
 </style>
 </head>
 <body>
@@ -612,6 +748,7 @@ footer p{margin:4px 0}
   </section>
   <section class="machine" aria-label="ガチャマシン">
     <div class="machine-top">
+      <a class="gacha-btn legend-request-btn" href="https://forms.gle/DYqc4t3PABATVdLC6" target="_blank" rel="noopener noreferrer">✨ レジェンドレア化希望フォーム</a>
       <div class="machine-label">🧠 BIWACHAP GACHA MACHINE 🧠 <button class="small-btn" type="button" data-feature-open="mission" id="missionOpenBtn">📅 ミッション</button> <button class="small-btn" type="button" data-feature-open="profile">👤 琵琶ちゃぱー(琵琶ちゃぱー?)プロフィール</button> <button class="small-btn nusuke-open-btn" type="button" id="openNusukeExam">📘 ぬーすけ先輩試験</button></div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><div class="counter" id="totalCounter">登録動画：-- 本</div><div class="counter" id="remainingCounter">残り動画：-- 本</div><div class="coin-counter" id="coinCounter">🪙 0 コイン</div><button class="small-btn" id="collectionBtn" type="button">📚 動画カード図鑑</button><button class="small-btn" id="titlesBtn" type="button">🏆 獲得した称号</button><button class="small-btn" id="resetGachaBtn" type="button">↻ ガチャをリセット</button></div>
     </div>
@@ -668,7 +805,23 @@ footer p{margin:4px 0}
   <p>動画タイトル・リンク・サムネイルはYouTubeおよびニコニコ動画から読み込んでいます。<br>動画の著作権・肖像権等は各権利者に帰属します。</p>
   <p>BGM・効果音（SE）は「魔王魂」よりダウンロードした素材を使用しています。<br>一部BGMの音声にはVOICEVOX:青山龍星を使用しています。<br>素材の権利は各権利者に帰属します。</p>
   <p>動画の削除・非公開・配信サービス側の仕様変更等により、サムネイルやリンクが表示されない場合があります。</p>
+  <div class="footer-creator-row"><button type="button" class="creator-posts-open" id="openCreatorPosts">他の制作物等紹介⚠️自我注意⚠️</button></div>
 </footer>
+
+<section class="creator-posts-modal" id="creatorPostsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="creatorPostsTitle">
+  <div class="creator-posts-dialog">
+    <div class="creator-posts-head"><h2 id="creatorPostsTitle">他の制作物等紹介⚠️自我注意⚠️</h2><button type="button" class="small-btn" id="closeCreatorPosts">閉じる ✕</button></div>
+    <div class="creator-posts-intro">このサイトの制作者：<a href="https://x.com/shishito775" target="_blank" rel="noopener noreferrer">@shishito775</a><br>これまでに制作・紹介した琵琶ちゃぷ関連のポストです。</div>
+    <div class="creator-posts-list" id="creatorPostsList">
+      <div class="creator-post-entry"><blockquote class="twitter-tweet"><a href="https://x.com/shishito775/status/2069736205215060302">ポストを表示</a></blockquote></div>
+      <div class="creator-post-entry"><blockquote class="twitter-tweet"><a href="https://x.com/shishito775/status/2034797304889393420">ポストを表示</a></blockquote></div>
+      <div class="creator-post-entry"><blockquote class="twitter-tweet"><a href="https://x.com/shishito775/status/1937178791971029188">ポストを表示</a></blockquote></div>
+      <div class="creator-post-entry"><blockquote class="twitter-tweet"><a href="https://x.com/shishito775/status/1901199989218648359">ポストを表示</a></blockquote></div>
+      <div class="creator-post-entry"><blockquote class="twitter-tweet"><a href="https://x.com/shishito775/status/1770762530924769328">ポストを表示</a></blockquote></div>
+      <div class="creator-post-entry"><blockquote class="twitter-tweet"><a href="https://x.com/shishito775/status/1731280932135751809">ポストを表示</a></blockquote></div>
+    </div>
+  </div>
+</section>
 
 <section class="beam-game-modal" id="beamGameModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="beamGameTitle">
   <div class="beam-game-panel">
@@ -687,7 +840,7 @@ footer p{margin:4px 0}
 <div id="chakraSpecialOverlay" aria-hidden="true"><div id="chakraSpecialText"></div><div class="chakra-special-hint">クリック／タップして続ける</div></div>
 <section class="mini-modal" id="yearGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🐺 琵琶ちゃぷ動画投稿年人狼</h2><button class="small-btn" data-close-modal="yearGameModal">閉じる ✕</button></div><p class="mini-status" id="yearGameStatus">9枚の動画から投稿年が違う2枚を探そう。</p><div class="year-grid" id="yearGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startYearGameBtn">新しいゲーム</button></div></div></section>
 <section class="mini-modal" id="memoryGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🃏 動画カード神経衰弱</h2><button class="small-btn" data-close-modal="memoryGameModal">閉じる ✕</button></div><p class="mini-status" id="memoryGameStatus">同じ動画のペアをそろえよう。</p><div class="memory-grid" id="memoryGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startMemoryGameBtn">新しいゲーム</button></div></div></section>
-<section class="mini-modal" id="homePuzzleModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog home-puzzle-dialog"><div class="mini-head"><h2>🏠 実家再現パズル</h2><button class="small-btn" data-close-modal="homePuzzleModal">閉じる ✕</button></div><div class="mini-status home-puzzle-statusbar"><span class="home-puzzle-prompt">「あの実家」がバラバラに……！？なるべく急いで再現しよう！！</span><span id="homePuzzleStatus" aria-live="polite">経過時間：0秒 ／ 配置：0/8</span></div><div class="home-floor-wrap"><div class="home-floor-row"><div class="home-edge-label home-bath">↓風呂・トイレ↓</div><div class="home-board-frame"><div class="home-edge-label home-garden">↑庭↑</div><div class="home-puzzle-grid" id="homePuzzleGrid" aria-label="実家の間取りパズル"></div><div class="home-edge-label home-entrance">↓玄関↓</div></div><div class="home-edge-spacer"></div></div></div><div class="mini-actions"><button class="mini-btn" id="newHomePuzzleBtn">別の家具で遊ぶ</button></div></div></section>
+<section class="mini-modal" id="homePuzzleModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog home-puzzle-dialog"><div class="mini-head home-puzzle-head"><h2>🏠 実家再現パズル</h2><span class="home-puzzle-prompt">「あの実家」がバラバラに……！？　なるべく急いで再現しよう！！</span><button class="small-btn" data-close-modal="homePuzzleModal">閉じる ✕</button></div><div class="mini-status home-puzzle-statusbar"><span id="homePuzzleStatus" aria-live="polite">経過時間：0秒 ／ 配置：0/8</span></div><div class="home-floor-wrap"><div class="home-floor-row"><div class="home-edge-label home-bath">↓風呂・トイレ↓</div><div class="home-board-frame"><div class="home-edge-label home-garden">↑庭↑</div><div class="home-puzzle-grid" id="homePuzzleGrid" aria-label="実家の間取りパズル"></div><div class="home-edge-label home-entrance">↓玄関↓</div></div><div class="home-edge-spacer"></div></div></div><div class="mini-actions"><button class="mini-btn" id="newHomePuzzleBtn">別の家具で遊ぶ</button></div></div></section>
 <section class="mini-modal" id="cookGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🍚 炊き込みゲーム</h2><button class="small-btn" data-close-modal="cookGameModal">閉じる ✕</button></div><p class="mini-status" id="cookGameStatus">落ちてくる虫の卵をタッパーで集めよう！</p><div class="cook-stage" id="cookStage"><img class="cook-background-image" id="cookBackgroundImage" src="./cook_background.png" alt="" aria-hidden="true"><img class="cook-appliance" id="cookRiceCookerImage" src="./rice_cooker.png" alt="炊飯器"><div class="cook-player" id="cookPlayer"><img id="cookTubImage" src="./tupper.png" alt="タッパー" draggable="false"><span class="cook-fallback">タッパー</span></div></div><div class="mini-actions"><button class="mini-btn" id="startCookGameBtn">ゲーム開始</button><button class="mini-btn" id="cookRiceBtn" hidden>炊飯器に入れる！</button></div></div></section>
 <div class="overlay" id="gachaOverlay" aria-hidden="true">
   <div class="overlay-inner">
@@ -1900,8 +2053,8 @@ footer p{margin:4px 0}
  function quiz(){return `<p class="mask-quiz-intro">黒いマスクの穴から見えるサムネイルを手がかりに、動画タイトルを当てよう！サムネイル全体の約10%だけが見えるよ。</p><p class="feature-muted">※サムネイル画像が表示されない場合は「別の問題を表示」ボタンから問題を変更してください。</p><div id="quizArea"></div>`}
  function election(){const ranked=Object.entries(state.votes).sort((a,b)=>b[1]-a[1]).slice(0,20);return `<p>ランダムに選ばれた2本の動画から好きな方へ投票。投票数は自分のブラウザ内で集計されます。</p><div class="feature-actions"><button id="newElection">次の対戦カード</button></div><div id="electionArea"></div><h3>あなたの動画総選挙 TOP 20</h3>${ranked.map(([id,n],i)=>{const v=videos.find(x=>x.id===id);return v?`<div class="feature-video"><b>${i+1}位</b><img src="${thumb(v)}" alt=""><div><a href="${esc(v.url)}" target="_blank" rel="noopener">${esc(v.title)}</a><div class="feature-muted">${n} 票</div></div></div>`:''}).join('')||'<p class="feature-muted">まだ投票がありません。</p>'}`}
  async function saveProfileImage(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),unview=get('biwachapGachaUnviewed_v1',[]),coins=Number(get('biwachapGachaCoins_v1',0))||0;const c=document.createElement('canvas');c.width=1200;c.height=1500;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,1200,1500);g.addColorStop(0,'#101a3a');g.addColorStop(1,'#172754');x.fillStyle=g;x.fillRect(0,0,1200,1500);x.textAlign='center';x.fillStyle='#c6ff38';x.font='900 58px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText('BIWACHAP PROFILE',600,110);x.fillStyle='#fff';x.font='bold 34px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText(state.equipped||'称号未装備',600,190);const stats=[['🎰 累計ガチャ',pulls+' 回'],['📚 動画カード',Object.keys(collection).length+' / '+videos.length+' 枚'],['💚 これ好き',fav.length+' 本'],['🔖 未視聴',unview.length+' 本'],['🪙 所持コイン',coins.toLocaleString()+' 枚'],['🧠 覆面サムネクイズ最大連続正解',Number(state.quizMaxStreak||0)+' 回']];stats.forEach((a,i)=>{const col=i%2,row=Math.floor(i/2),xx=100+col*520,yy=300+row*180;x.fillStyle='#0b1530';x.fillRect(xx,yy,480,130);x.strokeStyle='#7184b8';x.strokeRect(xx,yy,480,130);x.fillStyle='#dfff8b';x.font='bold 28px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText(a[0],xx+240,yy+48);x.fillStyle='#fff';x.font='bold 38px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText(a[1],xx+240,yy+100)});x.fillStyle='#dfff8b';x.font='bold 34px sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji"';x.fillText('お気に入り TOP 5',600,930);fav.slice(0,5).forEach((v,i)=>{x.fillStyle='#fff';x.font='26px sans-serif';x.textAlign='left';x.fillText(`${i+1}. ${v.title}`,120,1000+i*68,960)});const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='biwachap-profile.png';a.click();showToast('プロフィール画像を保存しました！')}
- function shareProfileX(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),coins=Number(get('biwachapGachaCoins_v1',0))||0;const text=`琵琶ちゃぱー(琵琶ちゃぱー?)プロフィール\n称号：${state.equipped||'未装備'}\nガチャ：${pulls}回／カード：${Object.keys(collection).length}枚\nこれ好き：${fav.length}本／コイン：${coins}枚\n#琵琶ちゃぷ`;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener,noreferrer')}
- function render(){ensure();videos=allVideos();renderTabs();$('featureHeading').textContent=(tabs.find(x=>x[0]===active)||tabs[0])[1];const featureHead=document.querySelector('#featureModal .feature-head');featureHead?.querySelector('.profile-head-actions')?.remove();if(active==='profile'&&featureHead){const actions=document.createElement('div');actions.className='profile-head-actions';actions.innerHTML='<button type="button" id="saveProfileImage">🖼️ プロフィール画像を保存</button><button type="button" id="shareProfileX">𝕏 プロフィールをXでポスト</button>';const close=featureHead.querySelector('#closeFeaturesBtn');featureHead.insertBefore(actions,close);} $('featureModal').classList.toggle('quiz-active',active==='quiz');const content=$('featureContent');const views={profile,mission,quiz};try{const view=views[active]||profile;content.innerHTML=view();bind();}catch(err){console.error('追加機能の表示エラー:',err);content.innerHTML='<p class="feature-muted">この機能の表示中にエラーが発生しました。ページを再読み込みしてください。</p>';}}
+ function shareProfileX(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),coins=Number(get('biwachapGachaCoins_v1',0))||0,quizMax=Number(state.quizMaxStreak||0)||0;const text=`【琵琶ちゃぱー(琵琶ちゃぱー?)プロフィール】\n\n称号：${state.equipped||'未装備'}\nガチャ：${pulls}回／カード：${Object.keys(collection).length}枚\nこれ好き：${fav.length}本／コイン：${coins}枚\n覆面サムネクイズ最大連続正解数：${quizMax}回\n\nhttps://shi1268.github.io/Biwachap15gacha/\n\n#琵琶ちゃぷ動画ガチャ`;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener,noreferrer')}
+ function render(){ensure();videos=allVideos();renderTabs();$('featureHeading').textContent=(tabs.find(x=>x[0]===active)||tabs[0])[1];const featureHead=document.querySelector('#featureModal .feature-head');featureHead?.querySelector('.profile-head-actions')?.remove();if(active==='profile'&&featureHead){const actions=document.createElement('div');actions.className='profile-head-actions';actions.innerHTML='<button type="button" class="gacha-btn profile-physical-btn" id="saveProfileImage">🖼️ プロフィール画像を保存</button><button type="button" class="gacha-btn profile-physical-btn" id="shareProfileX">𝕏 プロフィールをXでポスト</button>';const close=featureHead.querySelector('#closeFeaturesBtn');featureHead.insertBefore(actions,close);} $('featureModal').classList.toggle('quiz-active',active==='quiz');const content=$('featureContent');const views={profile,mission,quiz};try{const view=views[active]||profile;content.innerHTML=view();bind();}catch(err){console.error('追加機能の表示エラー:',err);content.innerHTML='<p class="feature-muted">この機能の表示中にエラーが発生しました。ページを再読み込みしてください。</p>';}}
  function bind(){const $c=$('featureContent');$c.querySelector('#openSecretPack')?.addEventListener('click',()=>{const g=$c.querySelector('#packGenre').value;const pool=videos.filter(v=>(g==='all'||v.genreType===g)&&!get('biwachapGachaPulledIds_v1',[]).includes(v.id));const v=pool[Math.floor(Math.random()*pool.length)];if(!v){$('packResult').textContent='対象動画がありません。通常ガチャをリセットするか、ジャンルを変更してください。';return}state.packOpened++;save(state);$('packResult').innerHTML=`<div class="feature-tile"><strong>🎉 シークレットパック開封！</strong>${videoRow(v)}</div>`;});
  $c.querySelectorAll('[data-stamp]').forEach(b=>b.onclick=()=>{const id=b.dataset.stamp;if(state.stamps.includes(id))return;state.stamps.push(id);b.disabled=true;b.textContent='獲得済み';b.previousElementSibling.querySelector('.feature-muted').textContent='✅ スタンプ獲得済み';state.daily.stamp=(state.daily.stamp||0)+1;state.weekly.stamp=(state.weekly.stamp||0)+1;save(state)});
  $c.querySelector('#stampSearch')?.addEventListener('input',e=>{const q=e.target.value.toLowerCase();$c.querySelectorAll('#stampList .feature-video').forEach(row=>row.hidden=!row.textContent.toLowerCase().includes(q))});
@@ -1936,7 +2089,7 @@ footer p{margin:4px 0}
  $c.querySelector('#titleChoiceOverlay')?.addEventListener('click',e=>{if(e.target.id==='titleChoiceOverlay')e.currentTarget.classList.remove('open')});
  $c.querySelectorAll('[data-equip-title]').forEach(b=>b.addEventListener('click',()=>{state.equipped=b.dataset.equipTitle;save(state);render()}));
  document.querySelector('#featureModal #saveProfileImage')?.addEventListener('click',saveProfileImage);document.querySelector('#featureModal #shareProfileX')?.addEventListener('click',shareProfileX);
- const startQuiz=()=>{const pool=videos.filter(v=>['challenge','game','talk'].includes(v.genreType));if(!pool.length){$('quizArea').textContent='動画データを読み込めませんでした。';return}const last=quizVideo?.id;let candidates=pool.filter(v=>v.id!==last);if(!candidates.length)candidates=pool;const v=candidates[Math.floor(Math.random()*candidates.length)],genre=v.genreType;quizVideo=v;const same=shuffle(pool.filter(x=>x.id!==v.id&&x.genreType===genre)).slice(0,3);if(same.length<3){$('quizArea').textContent='同じジャンルの選択肢が不足しています。';return}const choices=shuffle([v,...same]);const holes=[];for(let i=0;i<10;i++)holes.push({x:5+Math.random()*90,y:5+Math.random()*90,r:4.1});const circles=holes.map(h=>`<circle cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="${h.r}" fill="black"/>`).join('');const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 56.25" preserveAspectRatio="none"><defs><mask id="m"><rect width="100" height="56.25" fill="white"/>${circles}</mask></defs><rect width="100" height="56.25" fill="#02040a" mask="url(#m)"/></svg>`;const cover='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);const streak=Number(state.quizStreak||0),level=streak>=30?3:streak>=20?2:streak>=10?1:0;$('quizArea').innerHTML=`<div class="feature-tile"><div class="mosaic-frame"><img src="${thumb(v)}" alt="一部だけ見えるサムネイル"><img class="mosaic-cover" id="quizMask" src="${cover}" alt="黒いマスク"><div class="quiz-image-warning">この画像は触らないように！<br>（画像をドラッグ／長押しして答えを覗くズルが過去に発生しています。）</div></div><div class="quiz-streak level-${level}" id="quizStreakLive">連続正解：${streak}回目</div><div class="quiz-question-row"><div class="feature-question">この動画のタイトルは？</div><div id="quizFeedback" class="quiz-feedback"></div><button class="small-btn" id="nextMaskQuestion">別の問題を表示</button></div><div class="feature-options quiz-options">${choices.map(x=>`<button data-answer="${esc(x.id)}">${esc(x.title)}</button>`).join('')}</div></div>`;$('nextMaskQuestion').onclick=startQuiz;$('quizArea').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{if($('quizFeedback').textContent)return;const ok=b.dataset.answer===v.id;const all=$('quizArea').querySelectorAll('[data-answer]');$('quizMask')?.remove();all.forEach(x=>{x.disabled=true;if(x.dataset.answer===v.id)x.classList.add('correct-answer');if(x===b&&!ok)x.classList.add('wrong-answer')});const sound=new Audio(ok?'se-mask_ok.mp3':'se-mask_ng.mp3');sound.play().catch(()=>{});if(ok){state.quizStreak=(Number(state.quizStreak)||0)+1;state.quizCorrect=(Number(state.quizCorrect)||0)+1;state.quizMaxStreak=Math.max(Number(state.quizMaxStreak)||0,state.quizStreak);const st=state.quizStreak,milestones=[10,20,30,40,50],passed=milestones.filter(n=>st>=n&&!((state.quizMilestones||[]).includes(n)));if(!state.quizMilestones)state.quizMilestones=[];passed.forEach(n=>{state.quizMilestones.push(n);const title=`覆面サムネクイズ連続正解 ${n}`;if(!state.quizSecretTitles)state.quizSecretTitles=[];if(!state.quizSecretTitles.includes(title))state.quizSecretTitles.push(title);showToast(`🏆 秘密の称号「${title}」を獲得！`)});const reward=100+Math.min(5,Math.floor(st/10))*50;save(state);window.biwachapAwardCoins?.(reward,'覆面サムネクイズ正解');}else{state.quizStreak=0;save(state)}const now=Number(state.quizStreak)||0,lv=now>=30?3:now>=20?2:now>=10?1:0;$('quizStreakLive').textContent=`連続正解：${now}回目`;$('quizStreakLive').className=`quiz-streak level-${lv}`;$('quizFeedback').textContent=ok?'🎉 正解！':'😢 残念…！';$('quizFeedback').classList.add('quiz-feedback')})};if($c.querySelector('#quizArea'))startQuiz();
+ const startQuiz=()=>{const pool=videos.filter(v=>['challenge','game','talk'].includes(v.genreType));if(!pool.length){$('quizArea').textContent='動画データを読み込めませんでした。';return}const last=quizVideo?.id;let candidates=pool.filter(v=>v.id!==last);if(!candidates.length)candidates=pool;const v=candidates[Math.floor(Math.random()*candidates.length)],genre=v.genreType;quizVideo=v;const same=shuffle(pool.filter(x=>x.id!==v.id&&x.genreType===genre)).slice(0,3);if(same.length<3){$('quizArea').textContent='同じジャンルの選択肢が不足しています。';return}const choices=shuffle([v,...same]);const holes=[];for(let i=0;i<10;i++)holes.push({x:5+Math.random()*90,y:5+Math.random()*90,r:4.1});const circles=holes.map(h=>`<circle cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="${h.r}" fill="black"/>`).join('');const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 56.25" preserveAspectRatio="none"><defs><mask id="m"><rect width="100" height="56.25" fill="white"/>${circles}</mask></defs><rect width="100" height="56.25" fill="#02040a" mask="url(#m)"/></svg>`;const cover='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);const streak=Number(state.quizStreak||0),level=streak>=30?3:streak>=20?2:streak>=10?1:0;$('quizArea').innerHTML=`<div class="feature-tile"><div class="mosaic-frame"><img src="${thumb(v)}" alt="一部だけ見えるサムネイル"><img class="mosaic-cover" id="quizMask" src="${cover}" alt="黒いマスク"><div class="quiz-image-warning">この画像は触らないように！<br>（画像をドラッグして答えを覗くズルが過去に発生しています。）</div></div><div class="quiz-streak level-${level}" id="quizStreakLive">連続正解：${streak}回目</div><div class="quiz-question-row"><div class="feature-question">この動画のタイトルは？</div><div id="quizFeedback" class="quiz-feedback"></div><button class="small-btn" id="nextMaskQuestion">別の問題を表示</button></div><div class="feature-options quiz-options">${choices.map(x=>`<button data-answer="${esc(x.id)}">${esc(x.title)}</button>`).join('')}</div></div>`;$('nextMaskQuestion').onclick=startQuiz;$('quizArea').querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{if($('quizFeedback').textContent)return;const ok=b.dataset.answer===v.id;const all=$('quizArea').querySelectorAll('[data-answer]');$('quizMask')?.remove();all.forEach(x=>{x.disabled=true;if(x.dataset.answer===v.id)x.classList.add('correct-answer');if(x===b&&!ok)x.classList.add('wrong-answer')});const sound=new Audio(ok?'se-mask_ok.mp3':'se-mask_ng.mp3');sound.play().catch(()=>{});if(ok){state.quizStreak=(Number(state.quizStreak)||0)+1;state.quizCorrect=(Number(state.quizCorrect)||0)+1;state.quizMaxStreak=Math.max(Number(state.quizMaxStreak)||0,state.quizStreak);const st=state.quizStreak,milestones=[10,20,30,40,50],passed=milestones.filter(n=>st>=n&&!((state.quizMilestones||[]).includes(n)));if(!state.quizMilestones)state.quizMilestones=[];passed.forEach(n=>{state.quizMilestones.push(n);const title=`覆面サムネクイズ連続正解 ${n}`;if(!state.quizSecretTitles)state.quizSecretTitles=[];if(!state.quizSecretTitles.includes(title))state.quizSecretTitles.push(title);showToast(`🏆 秘密の称号「${title}」を獲得！`)});const reward=100+Math.min(5,Math.floor(st/10))*50;save(state);window.biwachapAwardCoins?.(reward,'覆面サムネクイズ正解');}else{state.quizStreak=0;save(state)}const now=Number(state.quizStreak)||0,lv=now>=30?3:now>=20?2:now>=10?1:0;$('quizStreakLive').textContent=`連続正解：${now}回目`;$('quizStreakLive').className=`quiz-streak level-${lv}`;$('quizFeedback').textContent=ok?'🎉 正解！':'😢 残念…！';$('quizFeedback').classList.add('quiz-feedback')})};if($c.querySelector('#quizArea'))startQuiz();
  $c.querySelector('#newElection')?.addEventListener('click',()=>{if(videos.length<2)return;const pair=shuffle(videos.slice()).slice(0,2);electionPair=pair;$('electionArea').innerHTML=pair.map(v=>`<div class="feature-tile"><img src="${thumb(v)}" alt="" style="width:100%;aspect-ratio:16/9;object-fit:contain"><strong>${esc(v.title)}</strong><button data-vote="${esc(v.id)}">この動画に投票！</button></div>`).join('');$('electionArea').className='feature-grid';$('electionArea').querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>{const id=b.dataset.vote;state.votes[id]=(state.votes[id]||0)+1;save(state);$('electionArea').textContent='投票ありがとう！';});});
  }
  function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -1956,10 +2109,12 @@ footer p{margin:4px 0}
 
  // ぬーすけ先輩試験：記事情報は nusuke_exam.csv（url,author）から読み込む。
  const examModal=$('nusukeExamModal');let examUrl='',examStarted=false;
+ function syncNusukeExamButtonGlow(){const btn=$('openNusukeExam');if(btn)btn.classList.toggle('score-unregistered',!localStorage.getItem('biwachapNusukeExamScore_v1'));}
+ syncNusukeExamButtonGlow();
  async function loadNusukeExam(){try{const res=await fetch('./nusuke_exam.csv',{cache:'no-store'});if(!res.ok)throw new Error('CSV未配置');const rows=(await res.text()).replace(/^\uFEFF/,'').trim().split(/\r?\n/);const h=rows.shift().split(',').map(x=>x.trim().toLowerCase());const u=h.indexOf('url'),a=h.indexOf('author');const vals=(rows[0]||'').split(',');examUrl=(vals[u]||'').trim();$('nusukeExamLink').href=examUrl||'#';$('nusukeExamLink').style.pointerEvents=examUrl?'auto':'none';$('nusukeExamAuthor').textContent='作成：'+((vals[a]||'').trim()||'未登録')+' 様';}catch(e){$('nusukeExamLink').href='#';$('nusukeExamAuthor').textContent='作成者情報を読み込めません（nusuke_exam.csvを確認）';}}
- $('openNusukeExam')?.addEventListener('click',()=>{examModal.classList.add('show');examModal.setAttribute('aria-hidden','false');loadNusukeExam();const done=localStorage.getItem('biwachapNusukeExamScore_v1');if(done){$('nusukeExamScore').disabled=true;$('submitNusukeScore').disabled=true;$('nusukeExamResult').textContent=`登録済み：${done}点（再登録できません）`;} });
+ $('openNusukeExam')?.addEventListener('click',()=>{syncNusukeExamButtonGlow();examModal.classList.add('show');examModal.setAttribute('aria-hidden','false');loadNusukeExam();const done=localStorage.getItem('biwachapNusukeExamScore_v1');if(done){$('nusukeExamScore').disabled=true;$('submitNusukeScore').disabled=true;$('nusukeExamResult').textContent=`登録済み：${done}点（再登録できません）`;} });
  $('closeNusukeExam')?.addEventListener('click',()=>{examModal.classList.remove('show');examModal.setAttribute('aria-hidden','true')});
- $('submitNusukeScore')?.addEventListener('click',()=>{if(localStorage.getItem('biwachapNusukeExamScore_v1'))return;const raw=$('nusukeExamScore').value,score=Number(raw);if(raw===''||!Number.isInteger(score)||score<0||score>100){$('nusukeExamResult').textContent='0～100の整数で入力してください。';return;}const tiers=score<60?[2000,'単位取得ならず…再履応援2000コインプレゼント！']:score<70?[3000,'単位取得おめでとう！お祝い3000コインプレゼント！']:score<85?[4000,'成績優秀！！お祝い4000コインプレゼント！']:score<100?[5000,'なな湖さん並み…！？お祝い5000コインプレゼント！']:[6000,'先輩学部博士課程に進まれるとのお噂。さすがです！！お祝い金6000コインプレゼント！！'];localStorage.setItem('biwachapNusukeExamScore_v1',String(score));window.biwachapAwardCoins?.(tiers[0],'ぬーすけ先輩試験報酬');$('nusukeExamScore').disabled=true;$('submitNusukeScore').disabled=true;$('nusukeExamResult').textContent=`${score}点！ ${tiers[1]}`;});
+ $('submitNusukeScore')?.addEventListener('click',()=>{if(localStorage.getItem('biwachapNusukeExamScore_v1'))return;const raw=$('nusukeExamScore').value,score=Number(raw);if(raw===''||!Number.isInteger(score)||score<0||score>100){$('nusukeExamResult').textContent='0～100の整数で入力してください。';return;}const tiers=score<60?[2000,'単位取得ならず…再履応援2000コインプレゼント！']:score<70?[3000,'単位取得おめでとう！お祝い3000コインプレゼント！']:score<85?[4000,'成績優秀！！お祝い4000コインプレゼント！']:score<100?[5000,'なな湖さん並み…！？お祝い5000コインプレゼント！']:[6000,'先輩学部博士課程に進まれるとのお噂。さすがです！！お祝い金6000コインプレゼント！！'];localStorage.setItem('biwachapNusukeExamScore_v1',String(score));syncNusukeExamButtonGlow();window.biwachapAwardCoins?.(tiers[0],'ぬーすけ先輩試験報酬');$('nusukeExamScore').disabled=true;$('submitNusukeScore').disabled=true;$('nusukeExamResult').textContent=`${score}点！ ${tiers[1]}`;});
  // 覆面サムネ：ドラッグ・長押しによる画像の持ち出しを抑止し、ホバー時に警告。
  document.addEventListener('dragstart',e=>{if(e.target.closest('.mosaic-frame'))e.preventDefault()});
  document.addEventListener('contextmenu',e=>{if(e.target.closest('.mosaic-frame'))e.preventDefault()});
@@ -1972,6 +2127,22 @@ footer p{margin:4px 0}
  $('watchConfirmYes')?.addEventListener('click',()=>{$('watchConfirmReply').textContent='そうですか…勘違いだったようです。失礼しました。';setTimeout(closeWatch,1500)});
  $('watchConfirmNo')?.addEventListener('click',()=>{const u=watchTarget?.url;closeWatch();if(u)window.open(u,'_blank','noopener,noreferrer')});
 
+ // 制作者のXポスト紹介ウィンドウ（X公式埋め込み）
+ const creatorPostsModal=$('creatorPostsModal');
+ function loadCreatorTweets(){
+   const list=$('creatorPostsList');if(!list)return;
+   const renderTweets=()=>{try{if(window.twttr?.widgets?.load)window.twttr.widgets.load(list)}catch(err){console.warn('Xポストの埋め込み表示に失敗しました',err)}};
+   if(window.twttr?.widgets?.load){renderTweets();return;}
+   if(!document.querySelector('script[data-creator-twitter-widgets]')){
+     const script=document.createElement('script');script.src='https://platform.twitter.com/widgets.js';script.async=true;script.charset='utf-8';script.setAttribute('data-creator-twitter-widgets','1');script.onload=renderTweets;script.onerror=()=>{list.querySelectorAll('.creator-post-entry').forEach(entry=>entry.classList.add('embed-unavailable'))};document.head.appendChild(script);
+   }
+ }
+ function openCreatorPosts(){creatorPostsModal?.classList.add('show');creatorPostsModal?.setAttribute('aria-hidden','false');loadCreatorTweets()}
+ function closeCreatorPosts(){creatorPostsModal?.classList.remove('show');creatorPostsModal?.setAttribute('aria-hidden','true')}
+ $('openCreatorPosts')?.addEventListener('click',openCreatorPosts);
+ $('closeCreatorPosts')?.addEventListener('click',closeCreatorPosts);
+ creatorPostsModal?.addEventListener('click',e=>{if(e.target===creatorPostsModal)closeCreatorPosts()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&creatorPostsModal?.classList.contains('show'))closeCreatorPosts()});
 
  const origTitleBtn=$('titlesBtn');origTitleBtn?.addEventListener('click',()=>{setTimeout(()=>{if(active==='title')render()},50)});
  setInterval(()=>{if(!$('featureModal')?.classList.contains('show'))return;const n=allVideos().length;if(n!==videos.length){videos=allVideos();render()}},3000);
