@@ -388,6 +388,19 @@ footer p{margin:4px 0}
 #homePuzzleModal .home-board-frame{position:relative;padding:8px;display:flex;align-items:stretch}#homePuzzleModal .home-puzzle-grid{flex:1;min-height:0}#homePuzzleModal .home-garden,#homePuzzleModal .home-entrance{position:absolute;left:50%;transform:translateX(-50%);z-index:2;white-space:nowrap;margin:0}#homePuzzleModal .home-garden{top:auto}#homePuzzleModal .home-entrance{bottom:auto}#homePuzzleModal .home-puzzle-layout{grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr)}#homePuzzleModal .home-board-column{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}#homePuzzleModal .home-board-column>.home-edge-label{position:static;transform:none;display:block;text-align:center;line-height:1.2}#homePuzzleModal .home-board-column .home-board-frame{width:100%;aspect-ratio:1/1}#homePuzzleModal .home-drop-slot{cursor:pointer;padding:2px;overflow:hidden}#homePuzzleModal .home-drop-slot.drop-hover{outline:3px solid #c6ff38;outline-offset:-3px}#homePuzzleModal .home-drag-piece{padding:7px 5px;gap:5px;min-width:0;min-height:clamp(110px,12vw,150px);overflow:hidden;grid-template-rows:minmax(0,1fr) auto}#homePuzzleModal .home-drag-piece.selected{outline:3px solid #c6ff38;background:#263b26}#homePuzzleModal .home-piece-image{display:block;width:auto;height:auto;max-width:94%;max-height:clamp(54px,9vw,110px);object-fit:contain;object-position:center}#homePuzzleModal .home-piece-icon{font-size:clamp(1.1rem,3vw,2rem);line-height:1.05}#homePuzzleModal .home-piece-label{font-size:clamp(.68rem,1.25vw,.9rem);line-height:1.2;white-space:normal;overflow-wrap:anywhere;word-break:normal;max-height:2.5em;overflow:hidden;text-align:center}
 @media(max-width:650px){#homePuzzleModal .home-puzzle-layout{grid-template-columns:1fr}#homePuzzleModal .home-puzzle-tray{grid-template-columns:repeat(3,minmax(0,1fr))}#homePuzzleModal .home-drag-piece{min-height:105px}}
 
+
+#homePuzzleModal .home-drag-piece,
+#homePuzzleModal .home-drop-slot.filled,
+#homePuzzleModal .home-fixed-piece{background:#26375f!important}
+#homePuzzleModal .home-piece-side-layout{display:flex;align-items:center;justify-content:center;gap:3px;width:100%;height:70%;min-height:0}
+#homePuzzleModal .home-piece-side-layout .home-piece-icon{font-size:clamp(1.2rem,3vw,2rem);max-width:34%}
+#homePuzzleModal .home-piece-side-layout .home-side-image{max-width:62%;max-height:100%;width:auto;height:auto;object-fit:contain}
+#homePuzzleModal .home-piece-image.is-scaled{transform:scale(var(--piece-scale,1));transform-origin:center}
+#homePuzzleModal .home-scroll-image{max-width:72%;max-height:70%;object-fit:contain}
+#homePuzzleModal .home-fixed-piece{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;overflow:hidden;padding:3px}
+#homePuzzleModal .home-fixed-piece .home-piece-icon{font-size:clamp(1.35rem,4vw,2.35rem)}
+#homePuzzleModal .home-fixed-piece .home-piece-label{font-size:clamp(.52rem,1.45vw,.74rem);line-height:1.12;text-align:center;color:#dce6ff;font-weight:800}
+
 </style>
 </head>
 <body>
@@ -1598,11 +1611,40 @@ footer p{margin:4px 0}
  const $=id=>document.getElementById(id),modal=$('homePuzzleModal'),grid=$('homePuzzleGrid');if(!modal||!grid)return;
  const furniture=[['🧺','洗濯物'],['❄️','エアコン'],['☎️','電話'],['🐶🏠','ワンちゃんのハウス'],['🍽️','食卓'],['🍳','キッチン'],['🗑️','ゴミ箱'],['🧊','冷蔵庫'],['📺','テレビ'],['🌀','サーキュレーター'],['🍽️','食器棚'],['📚','雑誌棚'],['♨️','電子レンジ'],['🍚','炊飯器'],['🛋️','ソファ'],['🎹','ピアノ'],['掛','掛け軸（？）'],['🗄️','タンス']];
  let target={},placed={},started=0,won=false,timerId=null,selectedPiece=null;
- const homePieceImageFiles={'エアコン':'kaden_airconditioner.png','ソファ':'kaden_sofa.png','キッチン':'kaden_kitchen.png','テレビ':'kaden_tv.png','ゴミ箱':'kaden_trashbox.png','電話':'kaden_phone.png','洗濯物':'kaden_laundry.png','ワンちゃんのハウス':'kaden_doghouse.png','食卓':'kaden_diningtable.png','冷蔵庫':'kaden_refrigerator.png','サーキュレーター':'kaden_circulator.png','食器棚':'kaden_cupboard.png','雑誌棚':'kaden_magazine_rack.png','電子レンジ':'kaden_microwave.png','炊飯器':'kaden_ricecooker.png','ピアノ':'kaden_piano.png','掛け軸（？）':'kaden_hanging_scroll.png','タンス':'kaden_chest.png'};
- function pieceMarkup(piece){const file=homePieceImageFiles[piece[1]];const src=file?`./${file}`:'';return `${src?`<img class="home-piece-image" src="${src}" alt="${piece[1]}" onerror="this.remove()">`:`<span class="home-piece-icon">${piece[0]}</span>`}<span class="home-piece-label">${piece[1]}</span>`;}
+ const homePieceDisplay={
+  '洗濯物':{img:'heyaboshi2.png'},
+  'エアコン':{img:'kaden_airconditioner.png'},
+  '電話':{img:'phone_kotei_denwa.png',scale:.75},
+  'ワンちゃんのハウス':{},
+  '食卓':{sideImg:'table_naname_wood.png'},
+  'キッチン':{imgs:['konro_mitsukuchi.png','nagashidai_sink.png']},
+  'ゴミ箱':{scale:1.5},
+  '冷蔵庫':{img:'kaden_reizouko.png'},
+  'テレビ':{img:'kaden_tv_wide.png'},
+  'サーキュレーター':{img:'kaden_circulator.png',scale:.6},
+  '食器棚':{sideImg:'tana_empty.png'},
+  '雑誌棚':{img:'book_zasshi_tana.png'},
+  '電子レンジ':{img:'cooking_microwave.png',scale:.75},
+  '炊飯器':{img:'rice_cooker.png'},
+  'ソファ':{img:'kagu_sofa.png'},
+  'ピアノ':{img:'piano_upright.png'},
+  '掛け軸（？）':{img:'kakejiku.png',scroll:true},
+  'タンス':{img:'kagu_tansu.png'},
+  '古いデスクトップPC':{scale:2.34}
+ };
+ function pieceMarkup(piece){
+  const [emoji,label]=piece,display=homePieceDisplay[label]||{},scale=display.scale||1;
+  const image=(file,cls='home-piece-image')=>`<img class="${cls}${scale!==1?' is-scaled':''}" style="${scale!==1?`--piece-scale:${scale};`:''}" src="./${file}" alt="${label}" onerror="this.remove()">`;
+  let visual='';
+  if(display.imgs?.length)visual=`<span class="home-piece-images">${display.imgs.map(file=>image(file)).join('')}</span>`;
+  else if(display.img)visual=image(display.img,display.scroll?'home-piece-image home-scroll-image':'home-piece-image');
+  else if(display.sideImg)visual=`<span class="home-piece-side-layout"><span class="home-piece-icon">${emoji}</span>${image(display.sideImg,'home-piece-image home-side-image')}</span>`;
+  else visual=`<span class="home-piece-icon"${scale!==1?` style="transform:scale(${scale})"`:''}>${emoji}</span>`;
+  return `${visual}<span class="home-piece-label">${label}</span>`;
+ }
  const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
  function render(){const board=grid.closest('.home-board-frame');let layout=document.getElementById('homePuzzleLayout');if(!layout&&board){const garden=board.querySelector('.home-garden'),entrance=board.querySelector('.home-entrance');const column=document.createElement('div');column.className='home-board-column';board.parentNode.insertBefore(column,board);if(garden)column.appendChild(garden);column.appendChild(board);if(entrance)column.appendChild(entrance);layout=document.createElement('div');layout.id='homePuzzleLayout';layout.className='home-puzzle-layout';column.parentNode.insertBefore(layout,column);layout.appendChild(column);const tray=document.createElement('div');tray.id='homePuzzleTray';tray.className='home-puzzle-tray';layout.appendChild(tray)}
- grid.innerHTML='';for(let i=0;i<9;i++){if(i===6){const fixed=document.createElement('div');fixed.className='home-fixed-piece';fixed.textContent='🖥️ 古いデスクトップPC';grid.appendChild(fixed);continue;}const slot=document.createElement('div');slot.className='home-drop-slot'+(placed[i]?' filled':'');slot.dataset.slot=String(i);slot.innerHTML=placed[i]?pieceMarkup(placed[i]):'ここにピースを置く';slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drop-hover')});slot.addEventListener('dragleave',()=>slot.classList.remove('drop-hover'));slot.addEventListener('drop',e=>{e.preventDefault();slot.classList.remove('drop-hover');placePiece(i,e.dataTransfer?.getData('text/plain')||selectedPiece)});slot.addEventListener('click',()=>{if(selectedPiece)placePiece(i,selectedPiece)});grid.appendChild(slot)}
+ grid.innerHTML='';for(let i=0;i<9;i++){if(i===6){const fixed=document.createElement('div');fixed.className='home-fixed-piece';fixed.innerHTML=pieceMarkup(['🖥️','古いデスクトップPC']);grid.appendChild(fixed);continue;}const slot=document.createElement('div');slot.className='home-drop-slot'+(placed[i]?' filled':'');slot.dataset.slot=String(i);slot.innerHTML=placed[i]?pieceMarkup(placed[i]):'ここにピースを置く';slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drop-hover')});slot.addEventListener('dragleave',()=>slot.classList.remove('drop-hover'));slot.addEventListener('drop',e=>{e.preventDefault();slot.classList.remove('drop-hover');placePiece(i,e.dataTransfer?.getData('text/plain')||selectedPiece)});slot.addEventListener('click',()=>{if(selectedPiece)placePiece(i,selectedPiece)});grid.appendChild(slot)}
  const tray=$('homePuzzleTray');if(tray){tray.innerHTML='';pool.filter(x=>!Object.values(placed).some(y=>y[1]===x[1])).forEach(piece=>{const b=document.createElement('div');b.className='home-drag-piece';b.draggable=true;b.innerHTML=pieceMarkup(piece);b.dataset.piece=piece[1];b.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',piece[1]));b.addEventListener('click',()=>{selectedPiece=piece[1];tray.querySelectorAll('.home-drag-piece').forEach(x=>x.classList.toggle('selected',x===b));$('homePuzzleStatus').textContent=`「${piece[1]}」を選択中。配置したい枠をタップしてください。`});tray.appendChild(b)});}
  const n=Object.keys(placed).length;$('homePuzzleStatus').textContent=won?`完成！ ${Math.floor((Date.now()-started)/1000)}秒で「あの実家」を再現！`:`経過時間：${Math.floor((Date.now()-started)/1000)}秒 ／ 配置：${n}/8`;
  }
