@@ -33,9 +33,12 @@ button,input{font:inherit}
 button{cursor:pointer}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
 .wrap{width:min(1120px,calc(100% - 28px));margin:0 auto}
-.audio-widget{position:fixed;z-index:25;right:14px;top:12px;display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#101a3aee;box-shadow:0 6px 22px #0005}
+.audio-widget{position:relative;z-index:25;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;width:100%;margin:0 0 16px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:#101a3aee;box-shadow:0 6px 22px #0005}
+.audio-widget-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-left:auto}
 .audio-widget label{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px}.audio-widget input{width:76px}
-@media(max-width:560px){.audio-widget{position:relative;top:auto;right:auto;margin:0 0 10px auto;width:max-content;max-width:100%;padding:5px 7px}.audio-widget input{width:58px}}
+.audio-widget .legend-request-btn{flex:0 1 auto}
+.audio-widget label{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px}.audio-widget input{width:76px}
+@media(max-width:620px){.audio-widget{align-items:flex-start;gap:8px;padding:8px}.audio-widget .legend-request-btn{max-width:100%;white-space:normal;text-align:center;font-size:.72rem;padding:8px 10px}.audio-widget-controls{gap:6px}.audio-widget-controls label{font-size:.7rem}.audio-widget input{width:52px}}
 header{padding:30px 0 18px;text-align:center}
 .eyebrow{font-size:.78rem;font-weight:900;letter-spacing:.22em;color:var(--lime);text-transform:uppercase}
 h1{font-size:clamp(1.8rem,5.5vw,3.7rem);line-height:1.12;margin:12px 0;color:var(--lime);
@@ -294,12 +297,12 @@ footer p{margin:4px 0}
 .collection-modal,.mini-modal{display:none;position:fixed;inset:0;z-index:86;align-items:center;justify-content:center;padding:14px;background:#030716ed;backdrop-filter:blur(8px)}
 .collection-modal.show,.mini-modal.show{display:flex}
 .collection-dialog,.mini-dialog{width:min(1100px,100%);max-height:92vh;overflow:auto;padding:clamp(12px,2.5vw,22px);border:1px solid #c6ff3880;border-radius:18px;background:linear-gradient(145deg,#172754,#080e24);box-shadow:0 0 35px #c6ff3820}
-.collection-head,.mini-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.collection-head h2,.mini-head h2{margin:0;color:var(--lime);font-size:1.25rem}
+.collection-head,.mini-head{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+.collection-head h2,.mini-head h2{margin:0;color:var(--lime);font-size:1.25rem}.collection-head #closeCollectionBtn{position:absolute;right:0;top:50%;transform:translateY(-50%)}
 .collection-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
 .collection-controls select,.collection-controls input{min-width:0;width:100%;padding:9px;border:1px solid #7184b8;border-radius:9px;background:#101a3a;color:#fff}.collection-controls input::placeholder{color:#aab5d0}.collection-search{grid-column:1/-1}
 
-.legend-request-collection-btn{grid-column:1/-1;justify-self:start;width:auto;min-height:48px;padding:10px 18px;border-radius:12px;font-size:.92rem;box-shadow:0 4px 0 #548a00,0 0 22px #b8ff3850}
+.legend-request-collection-btn{justify-self:center;width:auto;min-height:42px;padding:8px 16px;border-radius:12px;font-size:.86rem;box-shadow:0 4px 0 #548a00,0 0 22px #b8ff3850}
 .legend-request-collection-btn.is-armed{background:linear-gradient(135deg,#fff5a8,#d7ff70);box-shadow:0 4px 0 #9a7800,0 0 28px #ffe66d99;animation:legendRequestPulse 1.25s ease-in-out infinite alternate}
 @keyframes legendRequestPulse{from{filter:brightness(1);box-shadow:0 4px 0 #9a7800,0 0 18px #ffe66d66}to{filter:brightness(1.22);box-shadow:0 4px 0 #9a7800,0 0 34px #ffe66dcc}}
 .legend-request-hint{grid-column:1/-1;margin:-3px 0 2px;color:#dce6ff;font-size:.8rem;line-height:1.5}
@@ -311,7 +314,7 @@ footer p{margin:4px 0}
 .legend-request-copy-fallback{display:none;width:100%;min-height:86px;margin:10px 0;padding:9px;border:1px solid #7184b8;border-radius:8px;background:#080e24;color:#fff;font: .82rem/1.5 monospace;resize:vertical}
 .legend-request-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:18px}
 .legend-request-actions button{min-width:110px}
-@media(max-width:560px){.collection-controls{grid-template-columns:1fr}.legend-request-collection-btn{width:100%}.legend-request-dialog{padding:17px}}
+@media(max-width:560px){.collection-controls{grid-template-columns:1fr}.collection-head{padding-right:0;padding-bottom:42px}.collection-head #closeCollectionBtn{top:auto;bottom:0;right:0;transform:none}.legend-request-collection-btn{width:auto;max-width:100%}.legend-request-dialog{padding:17px}}
 .collection-progress{color:#dce6ff;font-size:.85rem;margin:8px 0 12px}
 .collection-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .collection-grid .video-card{animation:none}
@@ -735,10 +738,13 @@ footer p{margin:4px 0}
 </head>
 <body>
 <header class="wrap">
-  <div class="audio-widget" aria-label="BGMコントロール">
+  <div class="audio-widget" aria-label="BGM・SE・フォーム">
+  <a class="gacha-btn legend-request-btn" href="https://forms.gle/DYqc4t3PABATVdLC6" target="_blank" rel="noopener noreferrer">✨ レジェンドレア化希望フォーム</a>
+  <div class="audio-widget-controls">
   <button class="small-btn" id="bgmToggle">▶ BGM</button>
   <label title="BGM音量">BGM <input id="bgmVolume" type="range" min="0" max="1" step="0.05" value="0.25"></label>
   <label title="効果音音量">SE <input id="seVolume" type="range" min="0" max="1" step="0.05" value="0.2"></label>
+  </div>
   <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
   <audio id="pullSE" src="se-pull.mp3" preload="auto"></audio>
   <audio id="seN" src="se-n.mp3" preload="auto"></audio>
@@ -762,7 +768,6 @@ footer p{margin:4px 0}
   </section>
   <section class="machine" aria-label="ガチャマシン">
     <div class="machine-top">
-      <a class="gacha-btn legend-request-btn" href="https://forms.gle/DYqc4t3PABATVdLC6" target="_blank" rel="noopener noreferrer">✨ レジェンドレア化希望フォーム</a>
       <div class="machine-label">🧠 BIWACHAP GACHA MACHINE 🧠 <button class="small-btn" type="button" data-feature-open="mission" id="missionOpenBtn">📅 ミッション</button> <button class="small-btn" type="button" data-feature-open="profile">👤 琵琶ちゃぱー(琵琶ちゃぱー?)プロフィール</button> <button class="small-btn nusuke-open-btn" type="button" id="openNusukeExam">📘 ぬーすけ先輩試験</button></div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><div class="counter" id="totalCounter">登録動画：-- 本</div><div class="counter" id="remainingCounter">残り動画：-- 本</div><div class="coin-counter" id="coinCounter">🪙 0 コイン</div><button class="small-btn" id="collectionBtn" type="button">📚 動画カード図鑑</button><button class="small-btn" id="titlesBtn" type="button">🏆 獲得した称号</button><button class="small-btn" id="resetGachaBtn" type="button">↻ ガチャをリセット</button></div>
     </div>
@@ -850,7 +855,7 @@ footer p{margin:4px 0}
   </div>
 </section>
 
-<section class="collection-modal" id="collectionModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="collectionTitle"><div class="collection-dialog"><div class="collection-head"><h2 id="collectionTitle">📚 動画カード図鑑</h2><button class="small-btn" id="closeCollectionBtn" type="button">閉じる ✕</button></div><p class="collection-progress" id="collectionProgress">獲得済み 0 / 0 枚</p><div class="collection-tabs"><button class="small-btn is-active" id="videoCollectionTab" type="button">動画カード</button><button class="small-btn" id="cutinCollectionTab" type="button">カットイン演出</button></div><div id="videoCollectionPanel"><div class="collection-controls"><button class="gacha-btn legend-request-collection-btn" id="legendRequestModeBtn" type="button">✨ レジェンドレア化希望</button><p class="legend-request-hint" id="legendRequestModeHint" hidden>希望する動画カードをクリックしてください。選択すると動画情報をコピーしてフォームへの移動を確認します。</p><input class="collection-search" id="collectionSearch" type="search" placeholder="動画タイトルを検索…" aria-label="動画タイトルを検索"><select id="collectionGenre"><option value="all">すべてのジャンル</option><option value="challenge">企画動画</option><option value="game">ゲーム動画</option><option value="talk">お話動画</option></select><select id="collectionPlatform"><option value="all">YouTube・ニコニコ動画</option><option value="youtube">YouTube</option><option value="niconico">ニコニコ動画</option></select><select id="collectionSort"><option value="date-desc">投稿日が新しい順</option><option value="date-asc">投稿日が古い順</option><option value="title-asc">タイトル順</option><option value="genre">ジャンル順</option></select></div><div class="collection-grid" id="collectionGrid"></div></div><div id="cutinCollectionPanel" hidden><p class="collection-progress" id="cutinCollectionProgress"></p><div class="cutin-collection-grid" id="cutinCollectionGrid"></div></div></div></section>
+<section class="collection-modal" id="collectionModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="collectionTitle"><div class="collection-dialog"><div class="collection-head"><h2 id="collectionTitle">📚 動画カード図鑑</h2><button class="gacha-btn legend-request-collection-btn" id="legendRequestModeBtn" type="button">✨ レジェンドレア化希望</button><button class="small-btn" id="closeCollectionBtn" type="button">閉じる ✕</button></div><p class="collection-progress" id="collectionProgress">獲得済み 0 / 0 枚</p><div class="collection-tabs"><button class="small-btn is-active" id="videoCollectionTab" type="button">動画カード</button><button class="small-btn" id="cutinCollectionTab" type="button">カットイン演出</button></div><div id="videoCollectionPanel"><div class="collection-controls"><p class="legend-request-hint" id="legendRequestModeHint" hidden>希望する動画カードをクリックしてください。選択すると動画情報をコピーしてフォームへの移動を確認します。</p><input class="collection-search" id="collectionSearch" type="search" placeholder="動画タイトルを検索…" aria-label="動画タイトルを検索"><select id="collectionGenre"><option value="all">すべてのジャンル</option><option value="challenge">企画動画</option><option value="game">ゲーム動画</option><option value="talk">お話動画</option></select><select id="collectionPlatform"><option value="all">YouTube・ニコニコ動画</option><option value="youtube">YouTube</option><option value="niconico">ニコニコ動画</option></select><select id="collectionSort"><option value="date-desc">投稿日が新しい順</option><option value="date-asc">投稿日が古い順</option><option value="title-asc">タイトル順</option><option value="genre">ジャンル順</option></select></div><div class="collection-grid" id="collectionGrid"></div></div><div id="cutinCollectionPanel" hidden><p class="collection-progress" id="cutinCollectionProgress"></p><div class="cutin-collection-grid" id="cutinCollectionGrid"></div></div></div></section>
 <section class="legend-request-modal" id="legendRequestModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="legendRequestModalTitle"><div class="legend-request-dialog"><h3 id="legendRequestModalTitle">レジェンドレア化希望フォーム</h3><p id="legendRequestModalMessage">動画情報をコピーしました。レジェンドレア化希望フォームに移動しますか？</p><textarea class="legend-request-copy-fallback" id="legendRequestCopyFallback" readonly aria-label="コピーする動画情報"></textarea><div class="legend-request-actions"><button class="small-btn" id="legendRequestCancelBtn" type="button">キャンセル</button><button class="gacha-btn" id="legendRequestGoBtn" type="button" style="min-height:48px;padding:10px 16px">フォームに移動する ↗</button></div></div></section>
 <div id="chakraSpecialOverlay" aria-hidden="true"><div id="chakraSpecialText"></div><div class="chakra-special-hint">クリック／タップして続ける</div></div>
 <section class="mini-modal" id="yearGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🐺 琵琶ちゃぷ動画投稿年人狼</h2><button class="small-btn" data-close-modal="yearGameModal">閉じる ✕</button></div><p class="mini-status" id="yearGameStatus">9枚の動画から投稿年が違う2枚を探そう。</p><div class="year-grid" id="yearGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startYearGameBtn">新しいゲーム</button></div></div></section>
@@ -1434,7 +1439,7 @@ footer p{margin:4px 0}
     if(!copied){
       try{fallback.style.display="block";fallback.focus();fallback.select();copied=!!document.execCommand("copy");}catch(_){}
     }
-    if(copied){message.textContent=`「${video.title}」の情報（title,url,genre）をコピーしました。レジェンドレア化希望フォームに移動しますか？`;fallback.style.display="none";}
+    if(copied){message.textContent=`「${video.title}」の情報（タイトル、URL、ジャンル）をコピーしました。レジェンドレア化希望フォームに移動しますか？`;fallback.style.display="none";}
     else{message.textContent=`「${video.title}」の情報を自動コピーできませんでした。下の内容を手動でコピーしてから、フォームに移動してください。`;fallback.style.display="block";fallback.focus();fallback.select();}
     const modal=$("legendRequestModal");modal.classList.add("show");modal.setAttribute("aria-hidden","false");
   }
@@ -1862,7 +1867,18 @@ footer p{margin:4px 0}
     $("closeCollectionBtn").addEventListener("click",closeCollection);
     $("collectionModal").addEventListener("click",e=>{if(e.target===$("collectionModal"))closeCollection();});
     ["collectionGenre","collectionPlatform","collectionSort"].forEach(id=>$(id).addEventListener("change",renderCollection));
-    $("collectionSearch").addEventListener("input",renderCollection);
+    const collectionSearch=$("collectionSearch");
+    let collectionSearchComposing=false,collectionSearchTimer=null;
+    const commitCollectionSearch=()=>{if(collectionSearchTimer)clearTimeout(collectionSearchTimer);collectionSearchTimer=null;renderCollection();};
+    const scheduleCollectionSearch=()=>{if(collectionSearchTimer)clearTimeout(collectionSearchTimer);collectionSearchTimer=setTimeout(commitCollectionSearch,250);};
+    collectionSearch.addEventListener("compositionstart",()=>{collectionSearchComposing=true;if(collectionSearchTimer)clearTimeout(collectionSearchTimer);});
+    collectionSearch.addEventListener("compositionend",()=>{collectionSearchComposing=false;scheduleCollectionSearch();});
+    collectionSearch.addEventListener("input",event=>{
+      if(collectionSearchComposing||event.isComposing)return;
+      if(!collectionSearch.value.trim()){commitCollectionSearch();return;}
+      scheduleCollectionSearch();
+    });
+    collectionSearch.addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();collectionSearchComposing=false;commitCollectionSearch();}});
     // 視聴報酬は確認モーダルで30秒経過後に処理する。
     updateCoinCounter();
     $("closeTitlesBtn").addEventListener("click",closeTitles);
@@ -2040,7 +2056,7 @@ footer p{margin:4px 0}
  function startTimer(){if(started!==null||won)return;started=Date.now();timerId=setInterval(()=>{if(!won)updateStatus()},250);updateStatus()}
  let pool=[];
  function placePiece(slotIndex,id){if(won||placed[slotIndex])return;const piece=pool.find(x=>x[1]===id);if(!piece)return;if(started===null)startTimer();if(!target[slotIndex]||target[slotIndex][1]!==piece[1]){window.biwachapPlayGameSE?.('se-puzzle-move_ng.mp3');updateStatus();return;}window.biwachapPlayGameSE?.('se-puzzle-move_ok.mp3');placed[slotIndex]=piece;selectedPiece=null;render();checkWin()}
- function checkWin(){if(Object.keys(placed).length!==8)return;won=true;if(timerId)clearInterval(timerId);const sec=elapsedSeconds(),coins=sec<=60?1500:sec<=120?1000:sec<=180?700:500;$('homePuzzleStatus').textContent=`完成！ ${sec}秒で「あの実家」を再現！（${coins}コイン獲得！）`;window.biwachapPlayGameSE?.('se-memory-clear.mp3');window.biwachapAwardCoins?.(coins,'実家再現パズル クリア報酬');}
+ function checkWin(){if(Object.keys(placed).length!==8)return;won=true;if(timerId)clearInterval(timerId);const sec=elapsedSeconds(),coins=sec<10?1000:sec<20?500:sec<30?400:300;$('homePuzzleStatus').textContent=`完成！ ${sec}秒で「あの実家」を再現！（${coins}コイン獲得！）`;window.biwachapPlayGameSE?.('se-memory-clear.mp3');window.biwachapAwardCoins?.(coins,'実家再現パズル クリア報酬');}
  const allowedFurnitureBySlot={
   0:['洗濯物','エアコン','電話','ワンちゃんのハウス'],
   1:['食卓'],
