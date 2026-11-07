@@ -298,6 +298,20 @@ footer p{margin:4px 0}
 .collection-head h2,.mini-head h2{margin:0;color:var(--lime);font-size:1.25rem}
 .collection-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
 .collection-controls select{min-width:0;width:100%;padding:9px;border:1px solid #7184b8;border-radius:9px;background:#101a3a;color:#fff}
+
+.legend-request-collection-btn{grid-column:1/-1;justify-self:start;width:auto;min-height:48px;padding:10px 18px;border-radius:12px;font-size:.92rem;box-shadow:0 4px 0 #548a00,0 0 22px #b8ff3850}
+.legend-request-collection-btn.is-armed{background:linear-gradient(135deg,#fff5a8,#d7ff70);box-shadow:0 4px 0 #9a7800,0 0 28px #ffe66d99;animation:legendRequestPulse 1.25s ease-in-out infinite alternate}
+@keyframes legendRequestPulse{from{filter:brightness(1);box-shadow:0 4px 0 #9a7800,0 0 18px #ffe66d66}to{filter:brightness(1.22);box-shadow:0 4px 0 #9a7800,0 0 34px #ffe66dcc}}
+.legend-request-hint{grid-column:1/-1;margin:-3px 0 2px;color:#dce6ff;font-size:.8rem;line-height:1.5}
+.legend-request-modal{display:none;position:fixed;inset:0;z-index:110;align-items:center;justify-content:center;padding:16px;background:#030716ed;backdrop-filter:blur(8px)}
+.legend-request-modal.show{display:flex}
+.legend-request-dialog{width:min(520px,100%);padding:22px;border:1px solid #c6ff38;border-radius:18px;background:linear-gradient(145deg,#172754,#080e24);box-shadow:0 0 38px #c6ff3840;color:#fff}
+.legend-request-dialog h3{margin:0 0 12px;color:var(--lime);font-size:1.15rem}
+.legend-request-dialog p{line-height:1.6;color:#e5ebff}
+.legend-request-copy-fallback{display:none;width:100%;min-height:86px;margin:10px 0;padding:9px;border:1px solid #7184b8;border-radius:8px;background:#080e24;color:#fff;font: .82rem/1.5 monospace;resize:vertical}
+.legend-request-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:18px}
+.legend-request-actions button{min-width:110px}
+@media(max-width:560px){.collection-controls{grid-template-columns:1fr}.legend-request-collection-btn{width:100%}.legend-request-dialog{padding:17px}}
 .collection-progress{color:#dce6ff;font-size:.85rem;margin:8px 0 12px}
 .collection-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .collection-grid .video-card{animation:none}
@@ -836,7 +850,8 @@ footer p{margin:4px 0}
   </div>
 </section>
 
-<section class="collection-modal" id="collectionModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="collectionTitle"><div class="collection-dialog"><div class="collection-head"><h2 id="collectionTitle">📚 動画カード図鑑</h2><button class="small-btn" id="closeCollectionBtn" type="button">閉じる ✕</button></div><p class="collection-progress" id="collectionProgress">獲得済み 0 / 0 枚</p><div class="collection-tabs"><button class="small-btn is-active" id="videoCollectionTab" type="button">動画カード</button><button class="small-btn" id="cutinCollectionTab" type="button">カットイン演出</button></div><div id="videoCollectionPanel"><div class="collection-controls"><select id="collectionGenre"><option value="all">すべてのジャンル</option><option value="challenge">企画動画</option><option value="game">ゲーム動画</option><option value="talk">お話動画</option></select><select id="collectionPlatform"><option value="all">YouTube・ニコニコ動画</option><option value="youtube">YouTube</option><option value="niconico">ニコニコ動画</option></select><select id="collectionSort"><option value="date-desc">投稿日が新しい順</option><option value="date-asc">投稿日が古い順</option><option value="title-asc">タイトル順</option><option value="genre">ジャンル順</option></select></div><div class="collection-grid" id="collectionGrid"></div></div><div id="cutinCollectionPanel" hidden><p class="collection-progress" id="cutinCollectionProgress"></p><div class="cutin-collection-grid" id="cutinCollectionGrid"></div></div></div></section>
+<section class="collection-modal" id="collectionModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="collectionTitle"><div class="collection-dialog"><div class="collection-head"><h2 id="collectionTitle">📚 動画カード図鑑</h2><button class="small-btn" id="closeCollectionBtn" type="button">閉じる ✕</button></div><p class="collection-progress" id="collectionProgress">獲得済み 0 / 0 枚</p><div class="collection-tabs"><button class="small-btn is-active" id="videoCollectionTab" type="button">動画カード</button><button class="small-btn" id="cutinCollectionTab" type="button">カットイン演出</button></div><div id="videoCollectionPanel"><div class="collection-controls"><button class="gacha-btn legend-request-collection-btn" id="legendRequestModeBtn" type="button">✨ レジェンドレア化希望</button><p class="legend-request-hint" id="legendRequestModeHint" hidden>希望する動画カードをクリックしてください。選択すると動画情報をコピーしてフォームへの移動を確認します。</p><select id="collectionGenre"><option value="all">すべてのジャンル</option><option value="challenge">企画動画</option><option value="game">ゲーム動画</option><option value="talk">お話動画</option></select><select id="collectionPlatform"><option value="all">YouTube・ニコニコ動画</option><option value="youtube">YouTube</option><option value="niconico">ニコニコ動画</option></select><select id="collectionSort"><option value="date-desc">投稿日が新しい順</option><option value="date-asc">投稿日が古い順</option><option value="title-asc">タイトル順</option><option value="genre">ジャンル順</option></select></div><div class="collection-grid" id="collectionGrid"></div></div><div id="cutinCollectionPanel" hidden><p class="collection-progress" id="cutinCollectionProgress"></p><div class="cutin-collection-grid" id="cutinCollectionGrid"></div></div></div></section>
+<section class="legend-request-modal" id="legendRequestModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="legendRequestModalTitle"><div class="legend-request-dialog"><h3 id="legendRequestModalTitle">レジェンドレア化希望フォーム</h3><p id="legendRequestModalMessage">動画情報をコピーしました。レジェンドレア化希望フォームに移動しますか？</p><textarea class="legend-request-copy-fallback" id="legendRequestCopyFallback" readonly aria-label="コピーする動画情報"></textarea><div class="legend-request-actions"><button class="small-btn" id="legendRequestCancelBtn" type="button">キャンセル</button><button class="gacha-btn" id="legendRequestGoBtn" type="button" style="min-height:48px;padding:10px 16px">フォームに移動する ↗</button></div></div></section>
 <div id="chakraSpecialOverlay" aria-hidden="true"><div id="chakraSpecialText"></div><div class="chakra-special-hint">クリック／タップして続ける</div></div>
 <section class="mini-modal" id="yearGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🐺 琵琶ちゃぷ動画投稿年人狼</h2><button class="small-btn" data-close-modal="yearGameModal">閉じる ✕</button></div><p class="mini-status" id="yearGameStatus">9枚の動画から投稿年が違う2枚を探そう。</p><div class="year-grid" id="yearGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startYearGameBtn">新しいゲーム</button></div></div></section>
 <section class="mini-modal" id="memoryGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🃏 動画カード神経衰弱</h2><button class="small-btn" data-close-modal="memoryGameModal">閉じる ✕</button></div><p class="mini-status" id="memoryGameStatus">同じ動画のペアをそろえよう。</p><div class="memory-grid" id="memoryGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startMemoryGameBtn">新しいゲーム</button></div></div></section>
@@ -883,6 +898,8 @@ footer p{margin:4px 0}
   };
   const $ = (id) => document.getElementById(id);
   let videos = [];
+  let legendRequestMode = false;
+  let legendRequestSelectedUrl = "https://forms.gle/DYqc4t3PABATVdLC6";
   let remainingVideos = [];
   const pulledVideoIds = new Set();
   let latestResults = [];
@@ -1100,6 +1117,7 @@ footer p{margin:4px 0}
     const genreNames = {challenge:"🎉 企画動画", game:"🎮 ゲーム動画", talk:"💬 お話動画"};
     const card = document.createElement("article");
     card.className = "video-card" + (genre ? " genre-" + genre : "") + (rarity ? " rarity-" + rarity : "");
+    card.dataset.videoId = video.id;
     if (noAnimation) card.style.animation = "none";
     card.innerHTML = `
       <div class="thumb-wrap">
@@ -1398,6 +1416,29 @@ footer p{margin:4px 0}
     return "";
   }
   function rewardWatch(id){if(!id)return;const ids=readStorage(STORAGE.watchRewards,[]);if(ids.includes(id)){showToast("この動画の視聴報酬は獲得済みです");return;}ids.push(id);writeStorage(STORAGE.watchRewards,ids);awardCoins(1500,"watch:"+id,"動画サイト報酬");}
+  function setLegendRequestMode(active){
+    legendRequestMode=!!active;
+    const button=$("legendRequestModeBtn"),hint=$("legendRequestModeHint");
+    if(button){button.classList.toggle("is-armed",legendRequestMode);button.textContent=legendRequestMode?"✕ 希望動画を選択中（解除）":"✨ レジェンドレア化希望";button.setAttribute("aria-pressed",String(legendRequestMode));}
+    if(hint)hint.hidden=!legendRequestMode;
+  }
+  function csvField(value){const text=String(value??"");return /[",\r\n]/.test(text)?'"'+text.replace(/"/g,'""')+'"':text;}
+  async function selectLegendRequestVideo(video){
+    setLegendRequestMode(false);
+    const genre=video.genre||({challenge:"企画",game:"ゲーム",talk:"お話"}[video.genreType]||"");
+    const csv=[video.title,video.url,genre].map(csvField).join(",");
+    const message=$("legendRequestModalMessage"),fallback=$("legendRequestCopyFallback");
+    fallback.value=csv;fallback.style.display="none";
+    let copied=false;
+    try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(csv);copied=true;}}catch(_){}
+    if(!copied){
+      try{fallback.style.display="block";fallback.focus();fallback.select();copied=!!document.execCommand("copy");}catch(_){}
+    }
+    if(copied){message.textContent=`「${video.title}」の情報（title,url,genre）をコピーしました。レジェンドレア化希望フォームに移動しますか？`;fallback.style.display="none";}
+    else{message.textContent=`「${video.title}」の情報を自動コピーできませんでした。下の内容を手動でコピーしてから、フォームに移動してください。`;fallback.style.display="block";fallback.focus();fallback.select();}
+    const modal=$("legendRequestModal");modal.classList.add("show");modal.setAttribute("aria-hidden","false");
+  }
+  function closeLegendRequestModal(){const modal=$("legendRequestModal");modal.classList.remove("show");modal.setAttribute("aria-hidden","true");}
   function renderCollection(){
     const grid=$("collectionGrid");if(!grid)return;grid.innerHTML="";
     const collection=getCollection();const earned=Object.keys(collection).length;
@@ -1435,7 +1476,7 @@ footer p{margin:4px 0}
   }
   function setCollectionTab(tab){const video=tab==="video";$("videoCollectionPanel").hidden=!video;$("cutinCollectionPanel").hidden=video;$("videoCollectionTab").classList.toggle("is-active",video);$("cutinCollectionTab").classList.toggle("is-active",!video);}
   function openCollection(){setCollectionTab("video");renderCollection();$("collectionModal").classList.add("show");$("collectionModal").setAttribute("aria-hidden","false");}
-  function closeCollection(){$("collectionModal").classList.remove("show");$("collectionModal").setAttribute("aria-hidden","true");}
+  function closeCollection(){setLegendRequestMode(false);$("collectionModal").classList.remove("show");$("collectionModal").setAttribute("aria-hidden","true");}
 
   function resetGacha() {
     if (busy || cutinPending.size) return;
@@ -1804,6 +1845,18 @@ footer p{margin:4px 0}
     $("resetGachaBtn").addEventListener("click",resetGacha);
     $("titlesBtn").addEventListener("click",openTitles);
     $("collectionBtn").addEventListener("click",openCollection);
+    $("legendRequestModeBtn").addEventListener("click",()=>setLegendRequestMode(!legendRequestMode));
+    $("collectionGrid").addEventListener("click",event=>{
+      if(!legendRequestMode)return;
+      const card=event.target.closest(".video-card");if(!card)return;
+      event.preventDefault();event.stopPropagation();
+      if(typeof event.stopImmediatePropagation==="function")event.stopImmediatePropagation();
+      const video=videos.find(v=>String(v.id)===String(card.dataset.videoId));
+      if(video)selectLegendRequestVideo(video);
+    },true);
+    $("legendRequestCancelBtn").addEventListener("click",closeLegendRequestModal);
+    $("legendRequestModal").addEventListener("click",event=>{if(event.target===$("legendRequestModal"))closeLegendRequestModal();});
+    $("legendRequestGoBtn").addEventListener("click",()=>{window.open("https://forms.gle/DYqc4t3PABATVdLC6","_blank","noopener,noreferrer");closeLegendRequestModal();});
     $("videoCollectionTab").addEventListener("click",()=>setCollectionTab("video"));
     $("cutinCollectionTab").addEventListener("click",()=>{setCollectionTab("cutin");renderCutinCollection();});
     $("closeCollectionBtn").addEventListener("click",closeCollection);
