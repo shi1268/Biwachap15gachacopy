@@ -1609,7 +1609,40 @@ footer p{margin:4px 0}
  let pool=[];
  function placePiece(slotIndex,id){if(won||placed[slotIndex])return;const piece=pool.find(x=>x[1]===id);if(!piece)return;if(!target[slotIndex]||target[slotIndex][1]!==piece[1]){$('homePuzzleStatus').textContent='そのピースは別の場所です。間取りをよく見て配置してね！';return;}placed[slotIndex]=piece;selectedPiece=null;render();checkWin()}
  function checkWin(){if(Object.keys(placed).length!==8)return;won=true;if(timerId)clearInterval(timerId);const sec=Math.floor((Date.now()-started)/1000),coins=sec<=60?1500:sec<=120?1000:sec<=180?700:500;$('homePuzzleStatus').textContent=`完成！ ${sec}秒で「あの実家」を再現！（${coins}コイン獲得！）`;window.biwachapPlayGameSE?.('se-memory-clear.mp3');window.biwachapAwardCoins?.(coins,'実家再現パズル クリア報酬');}
- function initialize(){if(timerId)clearInterval(timerId);const slots=[0,1,2,3,4,5,7,8];const chosen=shuffle(furniture).slice(0,8);target={};slots.forEach((slot,i)=>target[slot]=chosen[i]);pool=shuffle(chosen);placed={};selectedPiece=null;won=false;started=Date.now();render();timerId=setInterval(()=>{if(!won)$('homePuzzleStatus').textContent=`経過時間：${Math.floor((Date.now()-started)/1000)}秒 ／ 配置：${Object.keys(placed).length}/8`},250)}
+ const allowedFurnitureBySlot={
+  0:['洗濯物','エアコン','電話','ワンちゃんのハウス'],
+  1:['食卓'],
+  2:['キッチン','ゴミ箱','冷蔵庫'],
+  3:['テレビ','エアコン','サーキュレーター'],
+  4:['食器棚','雑誌棚','電子レンジ','炊飯器'],
+  5:['ソファ'],
+  7:['ピアノ','掛け軸（？）'],
+  8:['タンス']
+ };
+ // 各マスから1種類ずつ選び、同じ家具を重複させずに8マスを埋める。
+ // エアコンは上段左・中段左のどちらか一方にだけ出現する。
+ function makePuzzleSet(){
+  const slots=[0,1,2,3,4,5,7,8];
+  const candidates={};
+  slots.forEach(slot=>{candidates[slot]=shuffle(furniture.filter(piece=>allowedFurnitureBySlot[slot].includes(piece[1])))});
+  // 選択肢が少ないマスから探索して、重複なしの組み合わせを確実に作る。
+  const order=slots.slice().sort((a,b)=>candidates[a].length-candidates[b].length);
+  const result={},used=new Set();
+  function solve(index){
+   if(index>=order.length)return true;
+   const slot=order[index];
+   for(const piece of candidates[slot]){
+    if(used.has(piece[1]))continue;
+    used.add(piece[1]);result[slot]=piece;
+    if(solve(index+1))return true;
+    used.delete(piece[1]);delete result[slot];
+   }
+   return false;
+  }
+  if(!solve(0))throw new Error('実家再現パズルの家具配置を作成できませんでした');
+  return result;
+ }
+ function initialize(){if(timerId)clearInterval(timerId);target=makePuzzleSet();pool=shuffle(Object.values(target));placed={};selectedPiece=null;won=false;started=Date.now();render();timerId=setInterval(()=>{if(!won)$('homePuzzleStatus').textContent=`経過時間：${Math.floor((Date.now()-started)/1000)}秒 ／ 配置：${Object.keys(placed).length}/8`},250)}
  $('openHomePuzzleBtn')?.addEventListener('click',()=>{modal.classList.add('show');modal.setAttribute('aria-hidden','false');initialize()});$('newHomePuzzleBtn')?.addEventListener('click',initialize);modal.querySelector('[data-close-modal]')?.addEventListener('click',()=>{modal.classList.remove('show');modal.setAttribute('aria-hidden','true')});modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true')}});initialize();
 })();
 </script>
