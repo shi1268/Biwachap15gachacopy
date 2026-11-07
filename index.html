@@ -411,6 +411,39 @@ footer p{margin:4px 0}
 #homePuzzleModal .home-fixed-piece .home-piece-label{width:100%;margin-top:auto;padding-bottom:2px}
 #homePuzzleModal .home-scroll-image{width:auto;height:90%;max-width:88%;max-height:90%;object-fit:contain;transform:none;transform-origin:center}
 @media(max-width:650px){#homePuzzleModal .home-puzzle-tray{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));aspect-ratio:1/1;min-height:0}#homePuzzleModal .home-drag-piece{aspect-ratio:1/1;min-height:0}}
+
+/* 実家再現パズル：ベージュ系の塗り壁フレーム */
+#homePuzzleModal .home-board-frame{
+  box-sizing:border-box;
+  width:100%;
+  aspect-ratio:1 / 1;
+  padding:12px;
+  border:14px solid transparent;
+  border-image:repeating-linear-gradient(
+    135deg,
+    #efd1b2 0px,
+    #e5bd99 5px,
+    #dcb18b 9px,
+    #f1d4b7 14px
+  ) 14 stretch;
+  border-radius:3px;
+  background:
+    radial-gradient(ellipse at 18% 22%, #fff3df55 0 1px, transparent 2px),
+    radial-gradient(ellipse at 72% 64%, #b9876230 0 1px, transparent 2px),
+    linear-gradient(145deg,#f3ddc5 0%,#e9c9a8 48%,#f0d5b8 100%);
+  box-shadow:
+    inset 0 0 0 2px #fff0dc99,
+    inset 0 0 12px #9b6d4930,
+    0 4px 12px #0007;
+}
+@media(max-width:560px){
+  #homePuzzleModal .home-board-frame{
+    padding:6px;
+    border-width:9px;
+    border-image-width:9;
+  }
+}
+
 </style>
 </head>
 <body>
