@@ -444,6 +444,36 @@ footer p{margin:4px 0}
   }
 }
 
+
+/* 実家再現パズル：壁・マス・ピースの配色調整 */
+#homePuzzleModal .home-board-frame{
+  background:#e8c5a3 !important;
+  border:14px solid #e8c5a3 !important;
+  border-image:none !important;
+  border-radius:3px !important;
+  box-shadow:inset 0 0 0 1px #f3dfca, 0 4px 12px #0007 !important;
+}
+#homePuzzleModal .home-puzzle-grid{background:transparent !important;}
+#homePuzzleModal .home-drop-slot,
+#homePuzzleModal .home-drop-slot.filled,
+#homePuzzleModal .home-drag-piece,
+#homePuzzleModal .home-fixed-piece{
+  background:#f8f3eb !important;
+  color:#17130f !important;
+  border-color:#d5c2ae !important;
+  box-shadow:inset 0 0 0 1px #ffffff88 !important;
+}
+#homePuzzleModal .home-drop-slot.filled{border-style:solid !important;}
+#homePuzzleModal .home-drop-slot.drop-hover{outline:none !important;}
+#homePuzzleModal .home-drag-piece.selected{outline:2px solid #b8a38e !important;background:#f8f3eb !important;}
+#homePuzzleModal .home-piece-label,
+#homePuzzleModal .home-fixed-piece .home-piece-label{color:#17130f !important;}
+#homePuzzleModal .home-puzzle-prompt,
+#homePuzzleModal .home-edge-label{color:inherit !important;text-shadow:none !important;}
+@media(max-width:560px){
+  #homePuzzleModal .home-board-frame{border-width:9px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -550,7 +580,7 @@ footer p{margin:4px 0}
 <div id="chakraSpecialOverlay" aria-hidden="true"><div id="chakraSpecialText"></div><div class="chakra-special-hint">クリック／タップして続ける</div></div>
 <section class="mini-modal" id="yearGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🐺 琵琶ちゃぷ動画投稿年人狼</h2><button class="small-btn" data-close-modal="yearGameModal">閉じる ✕</button></div><p class="mini-status" id="yearGameStatus">9枚の動画から投稿年が違う2枚を探そう。</p><div class="year-grid" id="yearGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startYearGameBtn">新しいゲーム</button></div></div></section>
 <section class="mini-modal" id="memoryGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🃏 動画カード神経衰弱</h2><button class="small-btn" data-close-modal="memoryGameModal">閉じる ✕</button></div><p class="mini-status" id="memoryGameStatus">同じ動画のペアをそろえよう。</p><div class="memory-grid" id="memoryGameGrid"></div><div class="mini-actions"><button class="mini-btn" id="startMemoryGameBtn">新しいゲーム</button></div></div></section>
-<section class="mini-modal" id="homePuzzleModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog home-puzzle-dialog"><div class="mini-head"><h2>🏠 実家再現パズル</h2><button class="small-btn" data-close-modal="homePuzzleModal">閉じる ✕</button></div><div class="mini-status home-puzzle-statusbar"><span class="home-puzzle-prompt">「あの実家」をなるべく急いで再現しよう！</span><span id="homePuzzleStatus" aria-live="polite">経過時間：0秒 ／ 配置：0/8</span></div><div class="home-floor-wrap"><div class="home-floor-row"><div class="home-edge-label home-bath">↓風呂・トイレ↓</div><div class="home-board-frame"><div class="home-edge-label home-garden">↑庭↑</div><div class="home-puzzle-grid" id="homePuzzleGrid" aria-label="実家の間取りパズル"></div><div class="home-edge-label home-entrance">↓玄関↓</div></div><div class="home-edge-spacer"></div></div></div><div class="mini-actions"><button class="mini-btn" id="newHomePuzzleBtn">別の家具で遊ぶ</button></div></div></section>
+<section class="mini-modal" id="homePuzzleModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog home-puzzle-dialog"><div class="mini-head"><h2>🏠 実家再現パズル</h2><button class="small-btn" data-close-modal="homePuzzleModal">閉じる ✕</button></div><div class="mini-status home-puzzle-statusbar"><span class="home-puzzle-prompt">「あの実家」がバラバラに……！？なるべく急いで再現しよう！！</span><span id="homePuzzleStatus" aria-live="polite">経過時間：0秒 ／ 配置：0/8</span></div><div class="home-floor-wrap"><div class="home-floor-row"><div class="home-edge-label home-bath">↓風呂・トイレ↓</div><div class="home-board-frame"><div class="home-edge-label home-garden">↑庭↑</div><div class="home-puzzle-grid" id="homePuzzleGrid" aria-label="実家の間取りパズル"></div><div class="home-edge-label home-entrance">↓玄関↓</div></div><div class="home-edge-spacer"></div></div></div><div class="mini-actions"><button class="mini-btn" id="newHomePuzzleBtn">別の家具で遊ぶ</button></div></div></section>
 <section class="mini-modal" id="cookGameModal" aria-hidden="true" role="dialog" aria-modal="true"><div class="mini-dialog"><div class="mini-head"><h2>🍚 炊き込みゲーム</h2><button class="small-btn" data-close-modal="cookGameModal">閉じる ✕</button></div><p class="mini-status" id="cookGameStatus">落ちてくる虫の卵をタッパーで集めよう！</p><div class="cook-stage" id="cookStage"><img class="cook-background-image" id="cookBackgroundImage" src="./cook_background.png" alt="" aria-hidden="true"><img class="cook-appliance" id="cookRiceCookerImage" src="./rice_cooker.png" alt="炊飯器"><div class="cook-player" id="cookPlayer"><img id="cookTubImage" src="./tupper.png" alt="タッパー" draggable="false"><span class="cook-fallback">タッパー</span></div></div><div class="mini-actions"><button class="mini-btn" id="startCookGameBtn">ゲーム開始</button><button class="mini-btn" id="cookRiceBtn" hidden>炊飯器に入れる！</button></div></div></section>
 <div class="overlay" id="gachaOverlay" aria-hidden="true">
   <div class="overlay-inner">
@@ -1695,7 +1725,7 @@ footer p{margin:4px 0}
  function updateStatus(){const n=Object.keys(placed).length;$('homePuzzleStatus').textContent=won?`完成！ ${elapsedSeconds()}秒で「あの実家」を再現！`:`経過時間：${elapsedSeconds()}秒 ／ 配置：${n}/8`}
  function startTimer(){if(started!==null||won)return;started=Date.now();timerId=setInterval(()=>{if(!won)updateStatus()},250);updateStatus()}
  let pool=[];
- function placePiece(slotIndex,id){if(won||placed[slotIndex])return;const piece=pool.find(x=>x[1]===id);if(!piece)return;if(started===null)startTimer();if(!target[slotIndex]||target[slotIndex][1]!==piece[1]){window.biwachapPlayGameSE?.('se-puzzle-move_ng.mp3');updateStatus();return;}window.biwachapPlayGameSE?.('se-puzzle-move.mp3');placed[slotIndex]=piece;selectedPiece=null;render();checkWin()}
+ function placePiece(slotIndex,id){if(won||placed[slotIndex])return;const piece=pool.find(x=>x[1]===id);if(!piece)return;if(started===null)startTimer();if(!target[slotIndex]||target[slotIndex][1]!==piece[1]){window.biwachapPlayGameSE?.('se-puzzle-move_ng.mp3');updateStatus();return;}window.biwachapPlayGameSE?.('se-puzzle-move_ok.mp3');placed[slotIndex]=piece;selectedPiece=null;render();checkWin()}
  function checkWin(){if(Object.keys(placed).length!==8)return;won=true;if(timerId)clearInterval(timerId);const sec=elapsedSeconds(),coins=sec<=60?1500:sec<=120?1000:sec<=180?700:500;$('homePuzzleStatus').textContent=`完成！ ${sec}秒で「あの実家」を再現！（${coins}コイン獲得！）`;window.biwachapPlayGameSE?.('se-memory-clear.mp3');window.biwachapAwardCoins?.(coins,'実家再現パズル クリア報酬');}
  const allowedFurnitureBySlot={
   0:['洗濯物','エアコン','電話','ワンちゃんのハウス'],
