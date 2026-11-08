@@ -2224,28 +2224,26 @@ footer p{margin:4px 0}
   // 背景：濃紺に控えめな光と星を重ね、SNS向けの正方形ポスターに。
   const bg=x.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#080f27');bg.addColorStop(.55,'#14264b');bg.addColorStop(1,'#090f25');x.fillStyle=bg;x.fillRect(0,0,1200,1200);
   x.save();for(let i=0;i<90;i++){const xx=(i*137+43)%1200,yy=(i*83+29)%1200;x.globalAlpha=.12+(i%4)*.035;x.fillStyle=i%3===0?'#d7ff70':'#ffffff';x.beginPath();x.arc(xx,yy,(i%3)+1,0,Math.PI*2);x.fill()}x.restore();
-  x.textAlign='center';x.fillStyle='#c6ff38';x.font='900 48px sans-serif';x.fillText('BIWACHAP TOP 9 AWARDS',600,63);
-  x.fillStyle='#ffffff';x.font='bold 27px sans-serif';x.fillText('MY FAVORITE VIDEOS',600,101);
-  x.fillStyle='#aab7d7';x.font='18px sans-serif';x.fillText('琵琶ちゃぷ動画ガチャ｜これ好きランキング',600,130);
-  x.save();x.strokeStyle='#c6ff38';x.globalAlpha=.75;x.lineWidth=2;x.beginPath();x.moveTo(45,143);x.lineTo(1155,143);x.stroke();x.restore();
-  const gold={fill:'#30250f',stroke:'#e9bf55',text:'#ffe6a0',glow:'#ffcf5b',label:'👑 1ST  GOLD'};
-  const silver={fill:'#222d3d',stroke:'#d7e0eb',text:'#f1f5fa',glow:'#dce7f5',label:'🥈 2ND  SILVER'};
-  const bronze={fill:'#352116',stroke:'#c88759',text:'#f4c39f',glow:'#e4a477',label:'🥉 3RD  BRONZE'};
+  x.textAlign='center';x.fillStyle='#d7f56a';x.font='900 39px sans-serif';x.fillText('琵琶ちゃぷ動画ガチャ「これ好き」動画リストTOP９',600,104);
+  x.save();x.strokeStyle='#8ea94a';x.globalAlpha=.65;x.lineWidth=2;x.beginPath();x.moveTo(45,132);x.lineTo(1155,132);x.stroke();x.restore();
+  const gold={fill:'#211f19',stroke:'#c9a64b',text:'#f3dfaa',glow:'#c9a64b'};
+  const silver={fill:'#202630',stroke:'#aeb9c8',text:'#e0e5ec',glow:'#aeb9c8'};
+  const bronze={fill:'#2b211d',stroke:'#ad7958',text:'#e3b99d',glow:'#ad7958'};
   const normal={fill:'#101d38',stroke:'#7184b8',text:'#eaf0ff',glow:'#c6ff38'};
   const genreColors={challenge:'#ff9b35',game:'#a88bff',talk:'#43dfff'};
   function rankLabel(label,xx,yy,color,fontSize=22){x.save();x.textAlign='left';x.fillStyle=color;x.font=`1000 ${fontSize}px sans-serif`;x.fillText(label,xx,yy);x.restore()}
-  function emptyCard(xx,yy,w,h,n){fillCard(xx,yy,w,h,'#101d38','#52658f',14);x.textAlign='center';x.fillStyle='#aab7d7';x.font='bold 25px sans-serif';x.fillText(`${n} 位`,xx+w/2,yy+h/2-5);x.font='17px sans-serif';x.fillText('お気に入り未登録',xx+w/2,yy+h/2+28)}
+  function emptyCard(xx,yy,w,h,n,fill='#101d38',stroke='#52658f'){fillCard(xx,yy,w,h,fill,stroke,14);x.textAlign='center';x.fillStyle='#aab7d7';x.font='17px sans-serif';x.fillText('お気に入り未登録',xx+w/2,yy+h/2+6)}
   // 1位：大きな横長カード。サムネイルとタイトルを並べて主役感を出す。
-  const first=cards[0],x1=42,y1=158,w1=1116,h1=250;
-  if(first){fillCard(x1,y1,w1,h1,gold.fill,gold.stroke,22);x.save();x.shadowColor=gold.glow;x.shadowBlur=20;x.strokeStyle=gold.glow;x.lineWidth=1;round(x,x1+2,y1+2,w1-4,h1-4,20);x.stroke();x.restore();rankLabel(gold.label,x1+24,y1+39,gold.text,25);drawThumb(first.img,x1+24,y1+55,420,174);x.fillStyle='#ffe6a0';x.font='bold 19px sans-serif';x.fillText(String(first.v.genre||'動画'),x1+475,y1+88);drawWrapped(first.v.title,x1+475,y1+130,600,39,4,'bold 31px sans-serif','#fff7df');}else emptyCard(x1,y1,w1,h1,1);
+  const first=cards[0],x1=42,y1=150,w1=1116,h1=245;
+  if(first){fillCard(x1,y1,w1,h1,gold.fill,gold.stroke,18);drawThumb(first.img,x1+14,y1+14,650,217);x.fillStyle=gold.text;x.font='bold 18px sans-serif';x.fillText(String(first.v.genre||'動画'),x1+690,y1+65);drawWrapped(first.v.title,x1+690,y1+105,400,35,5,'bold 27px sans-serif','#fff7df');}else emptyCard(x1,y1,w1,h1,1,gold.fill,gold.stroke);
   // 2位・3位：銀・銅のペアカード。
-  const pairY=425,pairH=245,pairW=548,pairGap=20;
-  [1,2].forEach((idx)=>{const item=cards[idx],xx=42+(idx-1)*(pairW+pairGap),tone=idx===1?silver:bronze;if(!item){emptyCard(xx,pairY,pairW,pairH,idx+1);return}fillCard(xx,pairY,pairW,pairH,tone.fill,tone.stroke,18);rankLabel(tone.label,xx+18,pairY+32,tone.text,20);drawThumb(item.img,xx+18,pairY+45,pairW-36,125);drawWrapped(item.v.title,xx+20,pairY+198,pairW-40,25,2,'bold 20px sans-serif','#ffffff')});
+  const pairY=415,pairH=245,pairW=548,pairGap=20;
+  [1,2].forEach((idx)=>{const item=cards[idx],xx=42+(idx-1)*(pairW+pairGap),tone=idx===1?silver:bronze;if(!item){emptyCard(xx,pairY,pairW,pairH,idx+1,tone.fill,tone.stroke);return}fillCard(xx,pairY,pairW,pairH,tone.fill,tone.stroke,16);drawThumb(item.img,xx+12,pairY+12,pairW-24,155);drawWrapped(item.v.title,xx+16,pairY+195,pairW-32,23,2,'bold 19px sans-serif','#ffffff')});
   // 4位～9位：3列×2行。上位3件より控えめな紺＋黄緑で統一。
-  const smallW=359,smallH=178,smallGap=18,smallStartX=42,smallStartY=687;
-  for(let idx=3;idx<9;idx++){const col=(idx-3)%3,row=Math.floor((idx-3)/3),xx=smallStartX+col*(smallW+smallGap),yy=smallStartY+row*(smallH+16),item=cards[idx];if(!item){emptyCard(xx,yy,smallW,smallH,idx+1);continue}fillCard(xx,yy,smallW,smallH,normal.fill,normal.stroke,15);x.fillStyle=normal.glow;x.font='1000 18px sans-serif';x.textAlign='left';x.fillText(`${idx+1}TH`,xx+14,yy+25);x.fillStyle=genreColors[item.v.genreType]||normal.stroke;x.fillRect(xx+smallW-76,yy+15,60,5);drawThumb(item.img,xx+14,yy+36,smallW-28,82);drawWrapped(item.v.title,xx+14,yy+143,smallW-28,19,2,'bold 16px sans-serif','#ffffff')}
+  const smallW=359,smallH=178,smallGap=18,smallStartX=42,smallStartY=675;
+  for(let idx=3;idx<9;idx++){const col=(idx-3)%3,row=Math.floor((idx-3)/3),xx=smallStartX+col*(smallW+smallGap),yy=smallStartY+row*(smallH+16),item=cards[idx];if(!item){emptyCard(xx,yy,smallW,smallH,idx+1);continue}fillCard(xx,yy,smallW,smallH,normal.fill,normal.stroke,13);x.fillStyle=genreColors[item.v.genreType]||normal.stroke;x.fillRect(xx+smallW-58,yy+10,44,4);drawThumb(item.img,xx+10,yy+10,smallW-20,105);drawWrapped(item.v.title,xx+12,yy+145,smallW-24,18,2,'bold 15px sans-serif','#ffffff')}
   // フッター
-  x.save();x.textAlign='center';x.fillStyle='#d7ff70';x.font='bold 19px sans-serif';x.fillText('今日の琵琶ちゃぷおすすめ動画ガチャ',600,1095);x.fillStyle='#d5deef';x.font='15px sans-serif';x.fillText('shi1268.github.io/Biwachap15gacha/',600,1122);x.fillStyle='#c6ff38';x.font='bold 17px sans-serif';x.fillText('#琵琶ちゃぷ動画ガチャ',600,1154);x.restore();
+  x.save();x.textAlign='center';x.fillStyle='#c6ff38';x.font='bold 22px sans-serif';x.fillText('#琵琶ちゃぷ動画ガチャ',600,1098);x.restore();
   displayAndDownloadCanvas(c,previewId,'biwachap-favorites-top9.png','「これ好き」TOP 9画像を表示・保存しました！')
  }
  function renderProfileImageArea(host){host.insertAdjacentHTML('beforeend',`<section class="profile-image-gallery"><h3>🖼️ プロフィール画像</h3><p class="feature-muted">生成した画像はここに表示されます。スマホでは画像を長押しして保存することもできます。</p><div class="profile-image-card"><h4>👤 プロフィールカード</h4><img id="profileImagePreview" class="profile-image-preview" alt="プロフィール画像プレビュー" hidden></div><div class="profile-image-card"><h4>💚 これ好き TOP 9</h4><p class="feature-muted">「これ好き」リストの上位9本をランキング形式で表示します。1位は金、2位は銀、3位は銅の特別デザインです。</p><button type="button" class="gacha-btn profile-physical-btn" id="saveFavoriteGridImage">🖼️ TOP 9画像を生成・保存</button><img id="favoriteGridImagePreview" class="profile-image-preview" alt="これ好きTOP 9画像プレビュー" hidden></div></section>`);host.querySelector('#saveFavoriteGridImage')?.addEventListener('click',async()=>{const button=host.querySelector('#saveFavoriteGridImage');if(button.dataset.generating==='1')return;button.dataset.generating='1';button.disabled=true;try{await saveFavoriteGridImage()}catch(error){console.error('プロフィールTOP9画像の生成に失敗しました:',error);showToast('TOP9画像を生成できませんでした。もう一度お試しください。')}finally{button.disabled=false;delete button.dataset.generating}})}
