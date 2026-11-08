@@ -33,13 +33,14 @@ button,input{font:inherit}
 button{cursor:pointer}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
 .wrap{width:min(1120px,calc(100% - 28px));margin:0 auto}
-.audio-widget{position:absolute;z-index:125;top:10px;left:max(14px,calc((100vw - 1120px)/2));right:max(14px,calc((100vw - 1120px)/2));display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:12px;width:auto;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;pointer-events:none}
-.audio-widget>*{pointer-events:auto}
+.audio-widget{position:relative;z-index:5;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:14px;width:100%;margin:0 0 22px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
 .audio-widget-controls{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;justify-self:end;max-width:100%;min-width:0;margin-left:auto;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
 .audio-widget label{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap}.audio-widget input{width:76px;max-width:100%}
-.audio-widget .legend-request-btn{justify-self:start;align-self:start;flex:0 1 auto;max-width:100%;min-width:0;white-space:normal;text-align:center}
-@media(max-width:620px){header{padding-top:142px}.audio-widget{top:8px;left:8px;right:8px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:start}.audio-widget .legend-request-btn{justify-self:stretch;width:100%;max-width:100%;min-width:0;min-height:48px;white-space:normal;text-align:center;font-size:.7rem;padding:7px 6px;line-height:1.25;overflow-wrap:anywhere}.audio-widget-controls{display:grid;grid-template-columns:minmax(0,1fr);justify-items:end;align-content:start;justify-content:end;gap:5px;padding:0;max-width:100%;width:100%;min-width:0}.audio-widget-controls label{font-size:.68rem;gap:4px;justify-content:flex-end;white-space:nowrap}.audio-widget input{width:clamp(58px,20vw,82px)}.audio-widget-controls #bgmToggle{max-width:100%;white-space:normal;text-align:center;font-size:.68rem;padding:6px 7px;line-height:1.2}}
-header{padding:88px 0 18px;text-align:center}
+.audio-widget .legend-request-btn{justify-self:start;align-self:start;flex:0 1 auto;max-width:100%;min-width:0;min-height:46px;padding:10px 14px;font-size:.84rem;white-space:normal;text-align:center}
+header{padding:16px 0 18px;text-align:center}
+@media(max-width:620px){.audio-widget{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:18px;align-items:start}.audio-widget .legend-request-btn{justify-self:start;width:100%;max-width:100%;min-width:0;min-height:48px;white-space:normal;text-align:center;font-size:clamp(.62rem,2.8vw,.76rem);padding:7px 5px;line-height:1.25;overflow-wrap:anywhere}.audio-widget-controls{display:grid;grid-template-columns:minmax(0,1fr);justify-items:end;align-content:start;justify-content:end;gap:6px;padding:0;max-width:100%;width:100%;min-width:0}.audio-widget-controls label{font-size:clamp(.62rem,2.7vw,.72rem);gap:4px;justify-content:flex-end;white-space:nowrap}.audio-widget input{width:clamp(52px,18vw,76px)}.audio-widget-controls #bgmToggle{max-width:100%;white-space:normal;text-align:center;font-size:clamp(.62rem,2.7vw,.72rem);padding:6px 7px;line-height:1.2}header{padding-top:12px}}
+@media(max-width:360px){.audio-widget{gap:5px}.audio-widget .legend-request-btn{font-size:.62rem}.audio-widget-controls{gap:4px}.audio-widget-controls label{font-size:.61rem}.audio-widget input{width:50px}}
+
 .eyebrow{font-size:.78rem;font-weight:900;letter-spacing:.22em;color:var(--lime);text-transform:uppercase}
 h1{font-size:clamp(1.8rem,5.5vw,3.7rem);line-height:1.12;margin:12px 0;color:var(--lime);
  text-shadow:0 0 10px #a5ff005c,0 0 28px #a5ff0045;letter-spacing:-.045em}
@@ -757,6 +758,7 @@ footer p{margin:4px 0}
   <label title="BGM音量">BGM <input id="bgmVolume" type="range" min="0" max="1" step="0.05" value="0.25"></label>
   <label title="効果音音量">SE <input id="seVolume" type="range" min="0" max="1" step="0.05" value="0.2"></label>
   </div>
+  </div>
   <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
   <audio id="pullSE" src="se-pull.mp3" preload="auto"></audio>
   <audio id="seN" src="se-n.mp3" preload="auto"></audio>
@@ -767,7 +769,6 @@ footer p{margin:4px 0}
   <audio id="seLR" src="se-lr.mp3" preload="auto"></audio>
   <audio id="seLRFlip" src="se-lr_flip.mp3" preload="auto"></audio>
   <audio id="se10pull" src="se-10pull.mp3" preload="auto"></audio>
-</div>
   <div class="eyebrow">BIWACHAP VIDEO GACHA</div>
   <h1>今日の琵琶ちゃぷ<br>おすすめ動画ガチャ</h1>
   <div class="status"><span class="status-dot"></span><span id="poolStatus">動画リストを読み込み中…</span></div>
@@ -2214,30 +2215,40 @@ footer p{margin:4px 0}
  function loadCanvasImage(url){return new Promise(resolve=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=url;})}
  async function saveFavoriteGridImage(previewId="favoriteGridImagePreview"){
   const favorites=get('biwachapGachaFavorites_v1',[]).slice(0,9);
-  const c=document.createElement('canvas');c.width=1200;c.height=1500;const x=c.getContext('2d');
-  const g=x.createLinearGradient(0,0,1200,1500);g.addColorStop(0,'#101a3a');g.addColorStop(1,'#172754');x.fillStyle=g;x.fillRect(0,0,1200,1500);
-  x.textAlign='center';x.fillStyle='#c6ff38';x.font='900 48px sans-serif';x.fillText('MY BIWACHAP FAVORITES',600,66);x.fillStyle='#fff';x.font='bold 25px sans-serif';x.fillText('これ好き TOP 9',600,108);
   const cards=await Promise.all(favorites.map(async f=>{const v=videos.find(v=>v.id===f.id)||f;return {v,img:await loadCanvasImage(thumb(v))}}));
+  const c=document.createElement('canvas');c.width=1200;c.height=1200;const x=c.getContext('2d');
+  const round=(ctx,xx,yy,w,h,r)=>{ctx.beginPath();ctx.moveTo(xx+r,yy);ctx.arcTo(xx+w,yy,xx+w,yy+h,r);ctx.arcTo(xx+w,yy+h,xx,yy+h,r);ctx.arcTo(xx,yy+h,xx,yy,r);ctx.arcTo(xx,yy,xx+w,yy,r);ctx.closePath()};
+  const fillCard=(xx,yy,w,h,fill,stroke,r=18)=>{x.save();round(x,xx,yy,w,h,r);x.fillStyle=fill;x.fill();x.lineWidth=4;x.strokeStyle=stroke;x.stroke();x.restore()};
+  const drawThumb=(img,xx,yy,w,h)=>{x.save();round(x,xx,yy,w,h,10);x.clip();x.fillStyle='#071126';x.fillRect(xx,yy,w,h);if(img){const scale=Math.min(w/img.width,h/img.height),dw=img.width*scale,dh=img.height*scale;x.drawImage(img,xx+(w-dw)/2,yy+(h-dh)/2,dw,dh)}else{x.fillStyle='#aab7d7';x.textAlign='center';x.textBaseline='middle';x.font='bold 20px sans-serif';x.fillText('サムネイルを表示できません',xx+w/2,yy+h/2,w-20)}x.restore()};
+  const drawWrapped=(text,xx,yy,maxW,lineH,maxLines,font,color)=>{x.save();x.fillStyle=color;x.font=font;x.textAlign='left';x.textBaseline='alphabetic';let lines=[],line='';for(const ch of String(text||'タイトル不明')){if(x.measureText(line+ch).width>maxW&&line){lines.push(line);line=ch;if(lines.length>=maxLines){break}}else line+=ch}if(line&&lines.length<maxLines)lines.push(line);let consumed=lines.join('').length;if(consumed<String(text||'タイトル不明').length&&lines.length){let last=lines[lines.length-1];while(last&&x.measureText(last+'…').width>maxW)last=last.slice(0,-1);lines[lines.length-1]=last+'…'}lines.forEach((line,i)=>x.fillText(line,xx,yy+i*lineH,maxW));x.restore()};
+  // 背景：濃紺に控えめな光と星を重ね、SNS向けの正方形ポスターに。
+  const bg=x.createLinearGradient(0,0,1200,1200);bg.addColorStop(0,'#080f27');bg.addColorStop(.55,'#14264b');bg.addColorStop(1,'#090f25');x.fillStyle=bg;x.fillRect(0,0,1200,1200);
+  x.save();for(let i=0;i<90;i++){const xx=(i*137+43)%1200,yy=(i*83+29)%1200;x.globalAlpha=.12+(i%4)*.035;x.fillStyle=i%3===0?'#d7ff70':'#ffffff';x.beginPath();x.arc(xx,yy,(i%3)+1,0,Math.PI*2);x.fill()}x.restore();
+  x.textAlign='center';x.fillStyle='#c6ff38';x.font='900 48px sans-serif';x.fillText('BIWACHAP TOP 9 AWARDS',600,63);
+  x.fillStyle='#ffffff';x.font='bold 27px sans-serif';x.fillText('MY FAVORITE VIDEOS',600,101);
+  x.fillStyle='#aab7d7';x.font='18px sans-serif';x.fillText('琵琶ちゃぷ動画ガチャ｜これ好きランキング',600,130);
+  x.save();x.strokeStyle='#c6ff38';x.globalAlpha=.75;x.lineWidth=2;x.beginPath();x.moveTo(45,143);x.lineTo(1155,143);x.stroke();x.restore();
+  const gold={fill:'#30250f',stroke:'#e9bf55',text:'#ffe6a0',glow:'#ffcf5b',label:'👑 1ST  GOLD'};
+  const silver={fill:'#222d3d',stroke:'#d7e0eb',text:'#f1f5fa',glow:'#dce7f5',label:'🥈 2ND  SILVER'};
+  const bronze={fill:'#352116',stroke:'#c88759',text:'#f4c39f',glow:'#e4a477',label:'🥉 3RD  BRONZE'};
+  const normal={fill:'#101d38',stroke:'#7184b8',text:'#eaf0ff',glow:'#c6ff38'};
   const genreColors={challenge:'#ff9b35',game:'#a88bff',talk:'#43dfff'};
-  const startY=140,cellW=350,cellH=430,gap=25,startX=37.5;
-  for(let i=0;i<9;i++){
-   const col=i%3,row=Math.floor(i/3),xx=startX+col*(cellW+gap),yy=startY+row*(cellH+gap),item=cards[i];
-   x.fillStyle='#0b1530';x.fillRect(xx,yy,cellW,cellH);
-   x.strokeStyle=item?(genreColors[item.v.genreType]||'#7184b8'):'#7184b8';x.lineWidth=5;x.strokeRect(xx+2.5,yy+2.5,cellW-5,cellH-5);
-   if(item){
-    if(item.img){const iw=item.img.width,ih=item.img.height,scale=Math.min((cellW-20)/iw,235/ih),dw=iw*scale,dh=ih*scale;x.drawImage(item.img,xx+(cellW-dw)/2,yy+12+(235-dh)/2,dw,dh)}
-    else{x.fillStyle='#26365d';x.fillRect(xx+10,yy+12,cellW-20,235);x.fillStyle='#dfff8b';x.textAlign='center';x.textBaseline='middle';x.font='bold 22px sans-serif';x.fillText('サムネイルを',xx+cellW/2,yy+118,cellW-36);x.fillText('表示できません',xx+cellW/2,yy+148,cellW-36);x.textBaseline='alphabetic'}
-    x.fillStyle='#fff';x.textAlign='left';x.font='bold 18px sans-serif';const title=String(item.v.title||'タイトル不明');let lines=[],line='',truncated=false;
-    for(const ch of title){if(x.measureText(line+ch).width>cellW-105){lines.push(line);line=ch;if(lines.length===7){truncated=true;break}}else line+=ch}
-    if(!truncated&&line&&lines.length<7)lines.push(line);
-    if(truncated){let last=lines[6]||'';while(last&&x.measureText(last+'…').width>cellW-105)last=last.slice(0,-1);lines[6]=last+'…'}
-    lines.slice(0,7).forEach((t,j)=>x.fillText(t,xx+14,yy+266+j*22,cellW-105));
-    const bx=xx+cellW-48,by=yy+cellH-48;x.save();x.shadowColor='#c6ff38';x.shadowBlur=16;x.fillStyle='#c6ff38';x.beginPath();x.arc(bx,by,37,0,Math.PI*2);x.fill();x.shadowBlur=0;x.lineWidth=4;x.strokeStyle='#fff';x.stroke();x.fillStyle='#101a3a';x.textAlign='center';x.textBaseline='middle';x.font='1000 72px sans-serif';x.fillText(String(i+1),bx,by+1);x.restore();x.textBaseline='alphabetic';
-   }else{x.fillStyle='#7184b8';x.textAlign='center';x.font='bold 26px sans-serif';x.fillText('空き枠',xx+cellW/2,yy+165)}
-  }
+  function rankLabel(label,xx,yy,color,fontSize=22){x.save();x.textAlign='left';x.fillStyle=color;x.font=`1000 ${fontSize}px sans-serif`;x.fillText(label,xx,yy);x.restore()}
+  function emptyCard(xx,yy,w,h,n){fillCard(xx,yy,w,h,'#101d38','#52658f',14);x.textAlign='center';x.fillStyle='#aab7d7';x.font='bold 25px sans-serif';x.fillText(`${n} 位`,xx+w/2,yy+h/2-5);x.font='17px sans-serif';x.fillText('お気に入り未登録',xx+w/2,yy+h/2+28)}
+  // 1位：大きな横長カード。サムネイルとタイトルを並べて主役感を出す。
+  const first=cards[0],x1=42,y1=158,w1=1116,h1=250;
+  if(first){fillCard(x1,y1,w1,h1,gold.fill,gold.stroke,22);x.save();x.shadowColor=gold.glow;x.shadowBlur=20;x.strokeStyle=gold.glow;x.lineWidth=1;round(x,x1+2,y1+2,w1-4,h1-4,20);x.stroke();x.restore();rankLabel(gold.label,x1+24,y1+39,gold.text,25);drawThumb(first.img,x1+24,y1+55,420,174);x.fillStyle='#ffe6a0';x.font='bold 19px sans-serif';x.fillText(String(first.v.genre||'動画'),x1+475,y1+88);drawWrapped(first.v.title,x1+475,y1+130,600,39,4,'bold 31px sans-serif','#fff7df');}else emptyCard(x1,y1,w1,h1,1);
+  // 2位・3位：銀・銅のペアカード。
+  const pairY=425,pairH=245,pairW=548,pairGap=20;
+  [1,2].forEach((idx)=>{const item=cards[idx],xx=42+(idx-1)*(pairW+pairGap),tone=idx===1?silver:bronze;if(!item){emptyCard(xx,pairY,pairW,pairH,idx+1);return}fillCard(xx,pairY,pairW,pairH,tone.fill,tone.stroke,18);rankLabel(tone.label,xx+18,pairY+32,tone.text,20);drawThumb(item.img,xx+18,pairY+45,pairW-36,125);drawWrapped(item.v.title,xx+20,pairY+198,pairW-40,25,2,'bold 20px sans-serif','#ffffff')});
+  // 4位～9位：3列×2行。上位3件より控えめな紺＋黄緑で統一。
+  const smallW=359,smallH=178,smallGap=18,smallStartX=42,smallStartY=687;
+  for(let idx=3;idx<9;idx++){const col=(idx-3)%3,row=Math.floor((idx-3)/3),xx=smallStartX+col*(smallW+smallGap),yy=smallStartY+row*(smallH+16),item=cards[idx];if(!item){emptyCard(xx,yy,smallW,smallH,idx+1);continue}fillCard(xx,yy,smallW,smallH,normal.fill,normal.stroke,15);x.fillStyle=normal.glow;x.font='1000 18px sans-serif';x.textAlign='left';x.fillText(`${idx+1}TH`,xx+14,yy+25);x.fillStyle=genreColors[item.v.genreType]||normal.stroke;x.fillRect(xx+smallW-76,yy+15,60,5);drawThumb(item.img,xx+14,yy+36,smallW-28,82);drawWrapped(item.v.title,xx+14,yy+143,smallW-28,19,2,'bold 16px sans-serif','#ffffff')}
+  // フッター
+  x.save();x.textAlign='center';x.fillStyle='#d7ff70';x.font='bold 19px sans-serif';x.fillText('今日の琵琶ちゃぷおすすめ動画ガチャ',600,1095);x.fillStyle='#d5deef';x.font='15px sans-serif';x.fillText('shi1268.github.io/Biwachap15gacha/',600,1122);x.fillStyle='#c6ff38';x.font='bold 17px sans-serif';x.fillText('#琵琶ちゃぷ動画ガチャ',600,1154);x.restore();
   displayAndDownloadCanvas(c,previewId,'biwachap-favorites-top9.png','「これ好き」TOP 9画像を表示・保存しました！')
  }
- function renderProfileImageArea(host){host.insertAdjacentHTML('beforeend',`<section class="profile-image-gallery"><h3>🖼️ プロフィール画像</h3><p class="feature-muted">生成した画像はここに表示されます。スマホでは画像を長押しして保存することもできます。</p><div class="profile-image-card"><h4>👤 プロフィールカード</h4><img id="profileImagePreview" class="profile-image-preview" alt="プロフィール画像プレビュー" hidden></div><div class="profile-image-card"><h4>💚 これ好き TOP 9</h4><p class="feature-muted">「これ好き」リストの上から9本を3列×3行で並べます。</p><button type="button" class="gacha-btn profile-physical-btn" id="saveFavoriteGridImage">🖼️ TOP 9画像を生成・保存</button><img id="favoriteGridImagePreview" class="profile-image-preview" alt="これ好きTOP 9画像プレビュー" hidden></div></section>`);host.querySelector('#saveFavoriteGridImage')?.addEventListener('click',()=>saveFavoriteGridImage())}
+ function renderProfileImageArea(host){host.insertAdjacentHTML('beforeend',`<section class="profile-image-gallery"><h3>🖼️ プロフィール画像</h3><p class="feature-muted">生成した画像はここに表示されます。スマホでは画像を長押しして保存することもできます。</p><div class="profile-image-card"><h4>👤 プロフィールカード</h4><img id="profileImagePreview" class="profile-image-preview" alt="プロフィール画像プレビュー" hidden></div><div class="profile-image-card"><h4>💚 これ好き TOP 9</h4><p class="feature-muted">「これ好き」リストの上位9本をランキング形式で表示します。1位は金、2位は銀、3位は銅の特別デザインです。</p><button type="button" class="gacha-btn profile-physical-btn" id="saveFavoriteGridImage">🖼️ TOP 9画像を生成・保存</button><img id="favoriteGridImagePreview" class="profile-image-preview" alt="これ好きTOP 9画像プレビュー" hidden></div></section>`);host.querySelector('#saveFavoriteGridImage')?.addEventListener('click',async()=>{const button=host.querySelector('#saveFavoriteGridImage');if(button.dataset.generating==='1')return;button.dataset.generating='1';button.disabled=true;try{await saveFavoriteGridImage()}catch(error){console.error('プロフィールTOP9画像の生成に失敗しました:',error);showToast('TOP9画像を生成できませんでした。もう一度お試しください。')}finally{button.disabled=false;delete button.dataset.generating}})}
  function shareProfileX(){const pulls=Number(get('biwachapGachaPullCount_v1',0))||0,collection=get('biwachapGachaCollection_v1',{}),fav=get('biwachapGachaFavorites_v1',[]),unview=get('biwachapGachaUnviewed_v1',[]);const text=`【琵琶ちゃぱー(琵琶ちゃぱー?)プロフィール】\n\n称号：${state.equipped||'未装備'}\n累計ガチャ：${pulls}回　カード：${Object.keys(collection).length}/${videos.length}枚\nこれ好き：${fav.length}本　未視聴：${unview.length}回\n\n↓ガチャはこちらから↓\nhttps://shi1268.github.io/Biwachap15gacha/\n\n#琵琶ちゃぷ動画ガチャ`;window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener,noreferrer')}
  function render(){ensure();videos=allVideos();renderTabs();$('featureHeading').textContent=(tabs.find(x=>x[0]===active)||tabs[0])[1];const featureHead=document.querySelector('#featureModal .feature-head');featureHead?.querySelector('.profile-head-actions')?.remove();if(active==='profile'&&featureHead){const actions=document.createElement('div');actions.className='profile-head-actions';actions.innerHTML='<button type="button" class="gacha-btn profile-physical-btn" id="saveProfileImage">🖼️ プロフィール画像を保存</button><button type="button" class="gacha-btn profile-physical-btn" id="shareProfileX">𝕏 プロフィールをXでポスト</button>';const close=featureHead.querySelector('#closeFeaturesBtn');featureHead.insertBefore(actions,close);} $('featureModal').classList.toggle('quiz-active',active==='quiz');const content=$('featureContent');const views={profile,mission,quiz};try{const view=views[active]||profile;content.innerHTML=view();bind();if(active==='profile')renderProfileImageArea(content);}catch(err){console.error('追加機能の表示エラー:',err);content.innerHTML='<p class="feature-muted">この機能の表示中にエラーが発生しました。ページを再読み込みしてください。</p>';}}
  function bind(){const $c=$('featureContent');$c.querySelector('#openSecretPack')?.addEventListener('click',()=>{const g=$c.querySelector('#packGenre').value;const pool=videos.filter(v=>(g==='all'||v.genreType===g)&&!get('biwachapGachaPulledIds_v1',[]).includes(v.id));const v=pool[Math.floor(Math.random()*pool.length)];if(!v){$('packResult').textContent='対象動画がありません。通常ガチャをリセットするか、ジャンルを変更してください。';return}state.packOpened++;save(state);$('packResult').innerHTML=`<div class="feature-tile"><strong>🎉 シークレットパック開封！</strong>${videoRow(v)}</div>`;});
@@ -2322,7 +2333,7 @@ footer p{margin:4px 0}
    button.disabled=true;
    try{
      // 実績更新関数はメインガチャ側のIIFEから公開された関数を利用する。
-     window.biwachapSetGameAchievementFlag?.('favoritesImage');
+     if(typeof window.biwachapSetGameAchievementFlag==='function')window.biwachapSetGameAchievementFlag('favoritesImage');
      await saveFavoriteGridImage('favoriteGridImageListPreview');
    }catch(error){
      console.error('これ好きTOP9画像の生成に失敗しました:',error);
